@@ -7,7 +7,9 @@ namespace App\Constants;
 use Hyperf\Constants\AbstractConstants;
 use Hyperf\Constants\Annotation\Constants;
 
-#[Constants]
+/**
+ * @Constants
+ */
 class ResponseCode extends AbstractConstants
 {
     /**
