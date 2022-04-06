@@ -21,4 +21,6 @@ class ResponseCode extends AbstractConstants
      * @Message("Response Ok! ")
      */
     public const RESPONSE_OK = 0;
+
+    public const RESPONSE_FAIL = 7;
 }

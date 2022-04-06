@@ -8,5 +8,5 @@ use App\Model\Model;
 
 class PoModel extends Model
 {
-  protected $table = 'prod_schedule_po';
+    protected $table = 'prod_schedule_po';
 }

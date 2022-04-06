@@ -30,7 +30,16 @@ abstract class AbstractController
      */
     protected $response;
 
-    public function responseOk($data = [], string $message = 'ok', int $code = ResponseCode::RESPONSE_OK)
+    public function responseOk($data = [])
+    {
+        return [
+            'code' => ResponseCode::RESPONSE_OK,
+            'data' => $data,
+            'message' => 'ok',
+        ];
+    }
+
+    public function responseDetail(string $message, array $data = [], int $code = ResponseCode::RESPONSE_FAIL)
     {
         return [
             'code' => $code,

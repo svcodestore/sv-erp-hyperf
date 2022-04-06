@@ -6,7 +6,7 @@ namespace App\Model\Prod\Schedule;
 
 use App\Model\Model;
 
-class CalendarModel extends Model
+class PhaseModel extends Model
 {
-  protected $table = 'prod_schedule_phase';
+    protected $table = 'prod_schedule_phase';
 }

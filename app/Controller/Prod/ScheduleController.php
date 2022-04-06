@@ -19,6 +19,11 @@ class ScheduleController extends AbstractController
 
     public function schedule(ScheduleRequest $request)
     {
-        return $this->responseOk($this->scheduleService->getAllCalendar());
+        $params = $request->validated();
+        $data = $this->scheduleService->getScheduleList($params['workLine'], $params['year'], $params['month']);
+        if (is_string($data)) {
+            return $this->responseDetail($data);
+        }
+        return $this->responseOk($data);
     }
 }
