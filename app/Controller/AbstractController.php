@@ -34,6 +34,7 @@ abstract class AbstractController
     {
         return [
             'code' => ResponseCode::RESPONSE_OK,
+            // 'data' => $data,
             'data' => $this->dataWithCamelCase($data),
             'message' => 'ok',
         ];
@@ -56,8 +57,13 @@ abstract class AbstractController
                     $value = $this->dataWithCamelCase($value);
                 }
                 if (is_string($key)) {
-                    $data[$this->toCamelCase($key)] = $value;
-                    unset($data[$key]);
+                    $camelCaseKey = $this->toCamelCase($key);
+                    if ($key != $camelCaseKey) {
+                        $data[$camelCaseKey] = $value;
+                        unset($data[$key]);
+                    } else {
+                        $data[$key] = $value;
+                    }
                 } else {
                     $data[$key] = $value;
                 }
