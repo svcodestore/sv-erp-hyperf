@@ -18,14 +18,19 @@ class ScheduleService
         return CalendarModel::query()->get()->toArray();
     }
 
-    public function getScheduleList(string $workLine, string $year, string $month)
+    public function getMonthPo(string $workLine, string $year, string $month)
     {
-        $pos = PoModel::query()
+        return PoModel::query()
             ->where([
                 'workshop' => $workLine, 'po_year' => $year, 'po_month' => $month
             ])
             ->get()
             ->toArray();
+    }
+
+    public function getScheduleList(string $workLine, string $year, string $month)
+    {
+        $pos = $this->getMonthPo($workLine, $year, $month);
         if (empty($pos)) return $pos;
 
         foreach ($pos as $k => $po) {
@@ -131,5 +136,40 @@ class ScheduleService
         ];
 
         return $params;
+    }
+
+    public function getPhaseByCode(string $codes): array
+    {
+        $columns = [
+            'id',
+            'code',
+            'name',
+            'code_id',
+            'cost_time',
+            'is_master',
+            'ahead_time',
+            'dead_time',
+            'out_time',
+            'worker_num',
+        ];
+
+        return PhaseModel::query()->whereIn('code', explode(',', $codes))->get($columns)->toArray();
+    }
+
+    public function getPhases(): array
+    {
+        $columns = [
+            'id',
+            'code',
+            'name',
+            'code_id',
+            'cost_time',
+            'is_master',
+            'ahead_time',
+            'dead_time',
+            'out_time',
+            'worker_num',
+        ];
+        return PhaseModel::query()->get()->toArray($columns);
     }
 }

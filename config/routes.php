@@ -14,5 +14,10 @@ Router::get('/favicon.ico', function () {
 
 
 Router::addGroup('/api', function () {
-    Router::addRoute(['GET'], '/schedule', [ScheduleController::class, 'schedule']);
+    Router::addGroup('/prod', function () {
+        Router::addRoute(['GET'], '/schedule', [ScheduleController::class, 'schedule']);
+        Router::addRoute(['GET'], '/phases', [ScheduleController::class, 'getPhaseByCode']);
+        Router::addRoute(['GET'], '/phases/[{code}]', [ScheduleController::class, 'getPhaseByCode']);
+        Router::addRoute(['GET'], '/po', [ScheduleController::class, 'getPo']);
+    });
 });

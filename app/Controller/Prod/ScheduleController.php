@@ -26,4 +26,25 @@ class ScheduleController extends AbstractController
         }
         return $this->responseOk($data);
     }
+
+    public function getPhaseByCode($code)
+    {
+
+        $code || ($code = $this->request->input('code'));
+
+        $data = [];
+        if (is_null($code)) {
+            $data = $this->scheduleService->getPhases();
+        } else {
+            $data = $this->scheduleService->getPhaseByCode($code);
+        }
+        return $this->responseOk($data);
+    }
+
+    public function getPo(ScheduleRequest $request)
+    {
+        $params = $request->validated();
+        $data = $this->scheduleService->getMonthPo($params['workLine'], $params['year'], $params['month']);
+        return $this->responseOk($data);
+    }
 }
