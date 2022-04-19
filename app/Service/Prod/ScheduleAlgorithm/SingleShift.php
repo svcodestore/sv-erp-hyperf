@@ -334,13 +334,6 @@ class SingleShift extends AbstractSchedule
         ];
     }
 
-    /**
-     * 处理工序开始时间。加入工作日上下班休息时间往前推
-     * @param  int $computeStartAt 工序开始时间，时间戳。未算入算入工作日上下班休息时间。
-     * @return int $phaseActualStartAt 工序完成时间，时间戳。已算入工作日上下班休息时间。
-     * @description 开始时间超过下班时间点就算对应的休息时间
-     * @access private
-     */
     private function handlePhaseStartTimeReverse(int $lastStartAt, int &$computeStartAt): int
     {
         list(

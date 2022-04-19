@@ -120,9 +120,6 @@ abstract class AbstractSchedule implements ISchedule
         }
     }
 
-    /**
-     * @description: 自动排程算法，通过生产单，行事历，生产工序信息（耗时）三个表中的数据来计算
-     */
     protected function schedule(int $phsSeq, array &$beforeOnlineWorkshops, array &$afterOnlineWorkshops)
     {
         $prdTotal = $this->prodList[$phsSeq]['item_qty'];
@@ -237,9 +234,6 @@ abstract class AbstractSchedule implements ISchedule
         // die;
     }
 
-    /**
-     * @description: 计算工站单等分所需时间和全部生产所需时间
-     */
     protected function phaseNeedTime(int $total, int $cost, int $phsSeq, int $workerNum = 1): array
     {
         // 工序耗时为整张生产单中最大工序耗时
@@ -251,9 +245,6 @@ abstract class AbstractSchedule implements ISchedule
         return [(int)$allPhaseNeed, (int)$singlePhaseNeed];
     }
 
-    /**
-     * @description: 查找车间上线工站后的第一个主流程
-     */
     protected function getFirstMasterPhase(array $phases): array
     {
         foreach ($phases as $k => $p) {
@@ -267,29 +258,12 @@ abstract class AbstractSchedule implements ISchedule
         return [];
     }
 
-    /**
-     * 处理工序开始时间。加入工作日上下班休息时间往后推
-     * @param int $computeStartAt 工序开始时间，时间戳。未算入算入工作日上下班休息时间。
-     * @param int $isReverse 是否向前计算时间
-     * @return int $phaseActualStartAt 工序完成时间，时间戳。已算入工作日上下班休息时间。
-     * @description 开始时间超过下班时间点就算对应的休息时间
-     * @access protected
-     */
     abstract protected function handlePhaseStartTime(int $lastStartAt, int &$computeStartAt, $isReverse = false): int;
 
-    /**
-     * @description: 是否在行事历时间范围内
-     */
     abstract protected function isInCalendar(int $timestamp): bool;
 
-    /**
-     * @description: 计算当天的行事历设定
-     */
     abstract protected function arrangeDaysCompute(int $timestamp): array;
 
-    /**
-     * @description: 计算工站开始时间，加入休息日
-     */
     protected function handleStartTimeWithArrange(int &$timestamp, bool $isReverse = false): void
     {
         $arrangeDays = $this->getNowArrangeDays($timestamp);
@@ -309,9 +283,6 @@ abstract class AbstractSchedule implements ISchedule
         }
     }
 
-    /**
-     * @description: 获取用于当前日期的行事历
-     */
     protected function getNowArrangeDays(int $timestamp): array
     {
         $arrangeDays = $this->arrangeDays;
@@ -352,19 +323,8 @@ abstract class AbstractSchedule implements ISchedule
         return $arrangeDays;
     }
 
-    /**
-     * 处理工序完成时间。加入工作日上下班休息时间
-     * @param int $computeStartAt 工序开始时间，时间戳。未算入工作日上下班休息时间。
-     * @param int &$phaseCompleteAt 工序完成时间，时间戳。未算入工作日上下班休息时间。
-     * @return int $phaseActualCompleteAt 工序完成时间，时间戳。已算入工作日上下班休息时间。
-     * @description 函数内自身递归调用自身。通过工序开始、完成时间是否在同一天进行计算
-     * @access protected
-     */
     abstract protected function handlePhaseCompleteTime(int $computeStartAt, int &$phaseCompleteAt): int;
 
-    /**
-     * @description: 计算工站完成时间，加入休息日
-     */
     protected function handleCompleteTimeWithArrange(int &$timestamp, int $startTime): void
     {
         $arrangeDays = $this->getNowArrangeDays($timestamp);

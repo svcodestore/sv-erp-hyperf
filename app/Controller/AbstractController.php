@@ -40,7 +40,7 @@ abstract class AbstractController
         ];
     }
 
-    public function responseDetail(string $message, array $data = [], int $code = ResponseCode::RESPONSE_FAIL)
+    public function responseDetail(string $message = 'fail', array $data = [], int $code = ResponseCode::RESPONSE_FAIL)
     {
         return [
             'code' => $code,

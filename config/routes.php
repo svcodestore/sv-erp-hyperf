@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Controller\AuthController;
 use App\Controller\Prod\ScheduleController;
 use Hyperf\HttpServer\Router\Router;
 
@@ -20,4 +21,10 @@ Router::addGroup('/api', function () {
         Router::addRoute(['GET'], '/phases/[{code}]', [ScheduleController::class, 'getPhaseByCode']);
         Router::addRoute(['GET'], '/po', [ScheduleController::class, 'getPo']);
     });
+
+    Router::addGroup('/oauth2.0', function () {
+        Router::addRoute(['POST'], '/token', [AuthController::class, 'getAccessToken']);
+    });
+
+    Router::post('/logout', [AuthController::class, 'logout']);
 });

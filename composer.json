@@ -14,6 +14,7 @@
     "require": {
         "php": ">=7.3",
         "doctrine/dbal": "^3.0",
+        "firebase/php-jwt": "^6.1",
         "hyperf/cache": "~2.2.0",
         "hyperf/command": "~2.2.0",
         "hyperf/config": "~2.2.0",
