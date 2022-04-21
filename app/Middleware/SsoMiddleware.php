@@ -33,9 +33,11 @@ class SsoMiddleware implements MiddlewareInterface
         $status = 401;
         if ($jwt) {
             $jwt = substr($jwt, 7);
+            $claims = JwtUtil::parseJwt($jwt);
+            $userId = $claims['userId'];
             $container = ApplicationContext::getContainer();
             $redis = $container->get(\Hyperf\Redis\Redis::class);
-            $isLogin = $redis->sIsMember(RedisKey::ISSUED_ACCESS_TOKEN, $jwt);
+            $isLogin = $redis->exists(RedisKey::ISSUED_ACCESS_TOKEN . ':' . $userId);
             if ($isLogin) {
                 return $handler->handle($request);
             }

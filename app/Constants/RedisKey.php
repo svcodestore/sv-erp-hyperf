@@ -12,5 +12,5 @@ use Hyperf\Constants\Annotation\Constants;
  */
 class RedisKey extends AbstractConstants
 {
-	public const ISSUED_ACCESS_TOKEN = "issuedAccessToken";
+    public const ISSUED_ACCESS_TOKEN = "issuedAccessToken";
 }

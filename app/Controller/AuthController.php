@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Constants\RedisKey;
 use App\Util\CurlUtil;
+use App\Util\JwtUtil;
 use Hyperf\Utils\ApplicationContext;
 
 class AuthController extends AbstractController
@@ -36,9 +37,10 @@ class AuthController extends AbstractController
         $token = $this->request->getHeaders()['authorization'][0] ?? '';
         if ($token) {
             $token = substr($token, 7);
+            $claims = JwtUtil::parseJwt($token);
             $container = ApplicationContext::getContainer();
             $redis = $container->get(\Hyperf\Redis\Redis::class);
-            $affected = $redis->srem(RedisKey::ISSUED_ACCESS_TOKEN, $token);
+            $affected = $redis->del(RedisKey::ISSUED_ACCESS_TOKEN . ':' . $claims['userId']);
             if ($affected > 0) {
                 return $this->responseOk();
             }
