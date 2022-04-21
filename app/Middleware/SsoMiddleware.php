@@ -32,19 +32,15 @@ class SsoMiddleware implements MiddlewareInterface
 
         $status = 401;
         if ($jwt) {
-            $info = JwtUtil::parseJwt($jwt);
-            if ($info) {
-                $expireAt = $info['exp'];
-                if (time() < $expireAt) {
-                    $container = ApplicationContext::getContainer();
-                    $redis = $container->get(\Hyperf\Redis\Redis::class);
-                    $isLogin = $redis->sIsMember(RedisKey::ISSUED_ACCESS_TOKEN, $jwt);
-                    if ($isLogin) {
-                        return $handler->handle($request);
-                    }
-                }
+            $jwt = substr($jwt, 7);
+            $container = ApplicationContext::getContainer();
+            $redis = $container->get(\Hyperf\Redis\Redis::class);
+            $isLogin = $redis->sIsMember(RedisKey::ISSUED_ACCESS_TOKEN, $jwt);
+            if ($isLogin) {
+                return $handler->handle($request);
             }
         }
+
 
         return $response->withStatus($status);
     }

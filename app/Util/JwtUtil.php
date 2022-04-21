@@ -15,6 +15,7 @@ class JwtUtil
 			$decoded = JWT::decode($jwt, new Key(env('JWT_SECRET'), 'HS256'));
 			return (array)$decoded;
 		} catch (\Exception $e) {
+			var_dump($e->getMessage());
 			return false;
 		}
 	}

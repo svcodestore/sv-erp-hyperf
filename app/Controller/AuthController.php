@@ -35,12 +35,14 @@ class AuthController extends AbstractController
     {
         $token = $this->request->getHeaders()['authorization'][0] ?? '';
         if ($token) {
+            $token = substr($token, 7);
             $container = ApplicationContext::getContainer();
             $redis = $container->get(\Hyperf\Redis\Redis::class);
-            $redis->srem(RedisKey::ISSUED_ACCESS_TOKEN, $token);
-            $this->responseOk();
-        } else {
-            $this->responseDetail();
+            $affected = $redis->srem(RedisKey::ISSUED_ACCESS_TOKEN, $token);
+            if ($affected > 0) {
+                return $this->responseOk();
+            }
         }
+        return $this->responseDetail();
     }
 }
