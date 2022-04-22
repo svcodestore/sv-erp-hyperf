@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Controller\AuthController;
+use App\Controller\Hr\KPI\ItemController;
 use App\Controller\Prod\ScheduleController;
 use Hyperf\HttpServer\Router\Router;
 
@@ -15,6 +16,12 @@ Router::get('/favicon.ico', function () {
 
 
 Router::addGroup('/api', function () {
+    Router::addGroup('/oauth2.0', function () {
+        Router::addRoute(['POST'], '/token', [AuthController::class, 'getAccessToken']);
+    });
+
+    Router::post('/logout', [AuthController::class, 'logout']);
+
     Router::addGroup('/prod', function () {
         Router::addRoute(['GET'], '/schedule', [ScheduleController::class, 'schedule']);
         Router::addRoute(['GET'], '/phases', [ScheduleController::class, 'getPhaseByCode']);
@@ -22,9 +29,7 @@ Router::addGroup('/api', function () {
         Router::addRoute(['GET'], '/po', [ScheduleController::class, 'getPo']);
     });
 
-    Router::addGroup('/oauth2.0', function () {
-        Router::addRoute(['POST'], '/token', [AuthController::class, 'getAccessToken']);
+    Router::addGroup('/hr', function () {
+        Router::addRoute(['GET'], '/items', [ItemController::class, 'getAllItem']);
     });
-
-    Router::post('/logout', [AuthController::class, 'logout']);
 });
