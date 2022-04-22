@@ -83,3 +83,22 @@ insert into prod_schedule_params(`key`, value, remark)
 VALUES ('shifts',
         '[{\"name\":\"白班\",\"times\":[{\"name\":\"上午\",\"start\":\"2021-10-06T23:30:00.000Z\",\"end\":\"2021-10-07T03:30:00.000Z\"},{\"name\":\"下午\",\"start\":\"2021-10-07T05:00:00.000Z\",\"end\":\"2021-10-07T09:00:00.000Z\"},{\"name\":\"晚上\",\"start\":\"2021-10-07T09:30:00.000Z\",\"end\":\"2021-10-07T13:30:00.000Z\"}]}]',
         '班次设定');
+
+CREATE TABLE hr_kpi_items
+(
+    id         int auto_increment,
+    pid        int         not null default 0,
+    code       varchar(6)  not null,
+    name       varchar(255),
+    version    varchar(32),
+    created_at datetime(6) not null default current_timestamp(6),
+    created_by bigint      not null,
+    updated_at datetime(6) not null default current_timestamp(6) on update current_timestamp(6),
+    updated_by bigint      not null,
+    primary key (id),
+    index hr_kpi_item_index_version (version),
+    index hr_kpi_item_index_pid (pid),
+    constraint unique hr_kpi_item_unique_index_code (code)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
