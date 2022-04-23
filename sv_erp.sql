@@ -167,3 +167,20 @@ CREATE TABLE hr_kpi_ranks
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
+CREATE TABLE hr_kpi_position_group
+(
+    id         int auto_increment,
+    pid        int         not null,
+    name       varchar(20) not null,
+    version    varchar(32),
+    created_at datetime(6) not null default current_timestamp(6),
+    created_by bigint      not null,
+    updated_at datetime(6) not null default current_timestamp(6) on update current_timestamp(6),
+    updated_by bigint      not null,
+    primary key (id),
+    index hr_kpi_position_group_index_version (version),
+    index hr_kpi_position_group_index_pid (pid)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
+
