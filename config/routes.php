@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Controller\AuthController;
+use App\Controller\Hr\KPI\ItemCategoryController;
 use App\Controller\Hr\KPI\ItemController;
 use App\Controller\Hr\KPI\RankController;
 use App\Controller\Prod\ScheduleController;
@@ -32,6 +33,8 @@ Router::addGroup('/api', function () {
 
     Router::addGroup('/hr', function () {
         Router::addRoute(['GET'], '/items', [ItemController::class, 'getAllItem']);
+
+        Router::addRoute(['GET'], '/item-categories', [ItemCategoryController::class, 'getAllItem']);
 
         Router::addRoute(['GET'], '/ranks', [RankController::class, 'getAllItem']);
     });
