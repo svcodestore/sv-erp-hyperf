@@ -34,8 +34,16 @@ Router::addGroup('/api', function () {
     Router::addGroup('/hr', function () {
         Router::addRoute(['GET'], '/items', [ItemController::class, 'getAllItem']);
 
-        Router::addRoute(['GET'], '/item-categories', [ItemCategoryController::class, 'getAllItem']);
+        Router::addRoute(['GET'], '/item-categories', [ItemCategoryController::class, 'getAllItemCategory']);
+
+        Router::addRoute(['GET'], '/titles', [\App\Controller\Hr\KPI\TitleController::class, 'getAllTitle']);
+
+        Router::addRoute(['GET'], '/title-categories', [\App\Controller\Hr\KPI\TitleCategoryController::class, 'getAllTitleCategory']);
 
         Router::addRoute(['GET'], '/ranks', [RankController::class, 'getAllItem']);
+
+        Router::addRoute(['GET'], '/positions', [\App\Controller\Hr\KPI\PositionController::class, 'getAllPosition']);
+
+        Router::addRoute(['GET'], '/position-groups', [\App\Controller\Hr\KPI\PositionGroupController::class, 'getAllPositionGroup']);
     });
 });

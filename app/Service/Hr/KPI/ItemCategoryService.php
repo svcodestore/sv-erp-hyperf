@@ -9,7 +9,7 @@ use App\Service\Service;
 
 class ItemCategoryService extends Service
 {
-    public function getAllItem(): array
+    public function getAllItemCategory(): array
     {
         return $this->all(new ItemModel);
     }
