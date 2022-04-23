@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Service\Hr\KPI;
 
 use App\Model\Hr\KPI\RankModel;
+use App\Service\Service;
 
-class RankService
+class RankService extends Service
 {
-    public function getAllItem()
+    public function getAllItem(): array
     {
-        return RankModel::query()->get()->toArray();
+        return $this->all(new RankModel);
     }
 }

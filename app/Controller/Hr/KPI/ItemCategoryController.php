@@ -16,7 +16,7 @@ class ItemCategoryController extends AbstractController
      */
     private $itemCategoryService;
 
-    public function getAllItem()
+    public function getAllItem(): array
     {
         return $this->responseOk($this->itemCategoryService->getAllItem());
     }

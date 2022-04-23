@@ -16,7 +16,7 @@ class RankController extends AbstractController
      */
     private $rankService;
 
-    public function getAllItem()
+    public function getAllItem(): array
     {
         return $this->responseOk($this->rankService->getAllItem());
     }

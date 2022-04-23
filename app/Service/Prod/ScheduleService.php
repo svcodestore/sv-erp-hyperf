@@ -10,22 +10,21 @@ use App\Model\Prod\Schedule\PhaseModel;
 use App\Model\Prod\Schedule\PoModel;
 use App\Service\Prod\ScheduleAlgorithm\MultiShift;
 use App\Service\Prod\ScheduleAlgorithm\SingleShift;
+use App\Service\Service;
 
-class ScheduleService
+class ScheduleService extends Service
 {
-    public function getAllCalendar()
+    public function getAllCalendar(): array
     {
-        return CalendarModel::query()->get()->toArray();
+        return $this->all(new CalendarModel);
     }
 
-    public function getMonthPo(string $workLine, string $year, string $month)
+    public function getMonthPo(string $workLine, string $year, string $month): array
     {
-        return PoModel::query()
-            ->where([
-                'workshop' => $workLine, 'po_year' => $year, 'po_month' => $month
-            ])
-            ->get()
-            ->toArray();
+        $cond = [
+            'workshop' => $workLine, 'po_year' => $year, 'po_month' => $month
+        ];
+        return $this->all(new PoModel, $cond);
     }
 
     public function getScheduleList(string $workLine, string $year, string $month)
@@ -46,9 +45,9 @@ class ScheduleService
         $params['workLine'] = $workLine;
         $params['prodList'] = array_values($pos);
 
-        $schedule = $params['isMultiShift'] ? (new MultiShift($params)) : (new SingleShift($params));
-        return $schedule->scheduleList();
         try {
+        $schedule = $params['isMultiShift'] ? (new MultiShift($params)) : (new SingleShift($params));
+            return $schedule->scheduleList();
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
@@ -56,7 +55,7 @@ class ScheduleService
 
     public function getScheduleParams(): array
     {
-        $params = ParamsModel::query()->get()->toArray();
+        $params = $this->all(new ParamsModel);
 
         $bisection_count = 1;
         $shifts = [];
@@ -74,16 +73,17 @@ class ScheduleService
 
     public function getCalendar(string $year, string $month): array
     {
-        return CalendarModel::query()->where(['year' => $year, 'month' => $month])->get()->toArray();
+        $cond = ['year' => $year, 'month' => $month];
+        return $this->all(new CalendarModel, $cond);
     }
 
-    public function getScheduleWrapParams(string $workLine, string $year, string $month)
+    public function getScheduleWrapParams(string $workLine, string $year, string $month): array
     {
         $params = $this->getScheduleParams();
         $shifts = $params['shifts'];
         $getArrangeDays = function (string $year, string $month) use ($shifts) {
             // 行事历
-            $arrangeDays        = $this->getCalendar($year, $month);
+            $arrangeDays = $this->getCalendar($year, $month);
 
             foreach ($arrangeDays as $k => $v) {
                 if ($v['profile']) {
@@ -93,7 +93,7 @@ class ScheduleService
                         if (count($shifts) === 1) {
                             $shiftsTime = $shiftsTime[0];
                             $workdayTimeRange = array_map(function ($e) {
-                                return date('H:i:s', strtotime($e['start'])) .  ' - ' . date('H:i:s', strtotime($e['end']));
+                                return date('H:i:s', strtotime($e['start'])) . ' - ' . date('H:i:s', strtotime($e['end']));
                             }, $shiftsTime['times']);
 
                             try {
@@ -102,7 +102,7 @@ class ScheduleService
                                 $offset = substr($th->getMessage(), -1);
                                 if ($offset == '1') {
                                     $afternoon = null;
-                                    $evening   = null;
+                                    $evening = null;
                                 } else if ($offset == '2') {
                                     $evening = null;
                                 }
@@ -121,18 +121,18 @@ class ScheduleService
         };
 
         $date = "{$year}-${month}";
-        $prevDate   = explode('-', date('Y-m', strtotime('-1 month', strtotime($date))));
-        $nextDate   = explode('-', date('Y-m', strtotime('1 month', strtotime($date))));
-        $nnextDate  = explode('-', date('Y-m', strtotime('2 month', strtotime($date))));
+        $prevDate = explode('-', date('Y-m', strtotime('-1 month', strtotime($date))));
+        $nextDate = explode('-', date('Y-m', strtotime('1 month', strtotime($date))));
+        $nnextDate = explode('-', date('Y-m', strtotime('2 month', strtotime($date))));
 
         $params = [
-            'arrangeDays'     => $getArrangeDays($year, $month),
-            'pArrangeDays'    => $getArrangeDays($prevDate[0], $prevDate[1]),
-            'nArrangeDays'    => $getArrangeDays($nextDate[0], $nextDate[1]),
-            'nnArrangeDays'   => $getArrangeDays($nnextDate[0], $nnextDate[1]),
-            'shifts'          => $shifts,
+            'arrangeDays' => $getArrangeDays($year, $month),
+            'pArrangeDays' => $getArrangeDays($prevDate[0], $prevDate[1]),
+            'nArrangeDays' => $getArrangeDays($nextDate[0], $nextDate[1]),
+            'nnArrangeDays' => $getArrangeDays($nnextDate[0], $nnextDate[1]),
+            'shifts' => $shifts,
             'bisection_count' => $params['bisection_count'],
-            'isMultiShift'    => count($shifts) === 1
+            'isMultiShift' => count($shifts) === 1
         ];
 
         return $params;
@@ -170,6 +170,6 @@ class ScheduleService
             'out_time',
             'worker_num',
         ];
-        return PhaseModel::query()->get()->toArray($columns);
+        return $this->all(new PhaseModel, [], $columns);
     }
 }

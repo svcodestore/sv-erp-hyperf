@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Service\Hr\KPI;
 
 use App\Model\Hr\KPI\ItemModel;
+use App\Service\Service;
 
-class ItemService
+class ItemService extends Service
 {
-    public function getAllItem()
+    public function getAllItem(): array
     {
-        return ItemModel::query()->get()->toArray();
+        return $this->all(new ItemModel);
     }
 }
