@@ -103,6 +103,23 @@ CREATE TABLE hr_kpi_items
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
+CREATE TABLE hr_kpi_item_category
+(
+    id         int auto_increment,
+    code       varchar(6)  not null,
+    name       varchar(255),
+    version    varchar(32),
+    created_at datetime(6) not null default current_timestamp(6),
+    created_by bigint      not null,
+    updated_at datetime(6) not null default current_timestamp(6) on update current_timestamp(6),
+    updated_by bigint      not null,
+    primary key (id),
+    index hr_kpi_item_category_index_version (version),
+    constraint unique hr_kpi_item_category_unique_index_code (code)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
+
 CREATE TABLE hr_kpi_ranks
 (
     id         int auto_increment,
