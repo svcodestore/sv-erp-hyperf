@@ -13,6 +13,7 @@
     "license": "Apache-2.0",
     "require": {
         "php": ">=7.3",
+        "alibabacloud/client": "^1.5",
         "doctrine/dbal": "^3.0",
         "firebase/php-jwt": "^6.1",
         "hyperf/cache": "~2.2.0",

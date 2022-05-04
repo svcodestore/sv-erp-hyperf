@@ -39,4 +39,7 @@ return [
             ],
         ],
     ],
+    'tpm' => [
+        'database' => env('DB_TPM_DATABASE', 'tpmdb')
+    ],
 ];

@@ -10,4 +10,5 @@ use App\Model\Model;
 
 class StaffModel extends Model
 {
+  protected $table = 'prodlib_repair_notify_staff';
 }

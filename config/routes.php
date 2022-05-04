@@ -53,5 +53,8 @@ Router::addGroup('/api', function () {
 
     Router::addGroup('/tpm', function () {
         Router::addRoute(['GET'], '/fittings', [\App\Controller\TPM\FittingController::class, 'fittings']);
+        Router::addRoute(['GET'], '/machines', [\App\Controller\TPM\MachineController::class, 'machines']);
+        Router::addRoute(['GET'], '/staffs', [\App\Controller\TPM\StaffController::class, 'staffs']);
+        Router::addRoute(['GET'], '/quickReport', [\App\Controller\TPM\ReportController::class, 'report']);
     });
 });

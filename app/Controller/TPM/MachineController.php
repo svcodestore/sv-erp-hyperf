@@ -7,6 +7,13 @@
 
 namespace App\Controller\TPM;
 
+use App\Model\TPM\MachineModel;
+
 class MachineController extends \App\Controller\AbstractController
 {
+
+  public function machines()
+  {
+    return MachineModel::all();
+  }
 }
