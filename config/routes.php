@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use App\Controller\AuthController;
 use App\Controller\OAuthController;
-use App\Controller\Hr\KPI\ItemCategoryController;
-use Hyperf\HttpServer\Router\Router;
 use App\Controller\Hr\KPI\ItemController;
 use App\Controller\Hr\KPI\RankController;
 use App\Controller\Hr\KPI\TitleController;
@@ -68,6 +66,14 @@ Router::addGroup('/api', function () {
         Router::addRoute(['GET'], '/orders', [OrderController::class, 'getAllOrder']);
         Router::addRoute(['GET'], '/order-details', [OrderController::class, 'getOrderDetails']);
     });
+
+    Router::addGroup('/tpm', function () {
+        Router::addRoute(['GET'], '/fittings', [\App\Controller\TPM\FittingController::class, 'fittings']);
+        Router::addRoute(['GET'], '/machines', [\App\Controller\TPM\MachineController::class, 'machines']);
+        Router::addRoute(['GET'], '/staffs', [\App\Controller\TPM\StaffController::class, 'staffs']);
+        Router::addRoute(['GET'], '/quickReport', [\App\Controller\TPM\ReportController::class, 'report']);
+    });
+
 
     Router::get('/sayHello', 'App\Controller\IndexController@sayHello');
 });
