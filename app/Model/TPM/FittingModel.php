@@ -7,4 +7,5 @@ use App\Model\Model;
 
 class FittingModel extends Model
 {
+  protected $table = 'tpmlib_fitting';
 }
