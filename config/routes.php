@@ -9,7 +9,7 @@ use App\Controller\Hr\KPI\RankController;
 use App\Controller\Prod\ScheduleController;
 use Hyperf\HttpServer\Router\Router;
 
-Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@index');
+Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@sayHello');
 Router::addRoute(['GET'], '/api', 'App\Controller\IndexController@index');
 
 Router::get('/favicon.ico', function () {
@@ -45,5 +45,11 @@ Router::addGroup('/api', function () {
         Router::addRoute(['GET'], '/positions', [\App\Controller\Hr\KPI\PositionController::class, 'getAllPosition']);
 
         Router::addRoute(['GET'], '/position-groups', [\App\Controller\Hr\KPI\PositionGroupController::class, 'getAllPositionGroup']);
+    });
+});
+
+Router::addServer('grpc', function () {
+    Router::addGroup('/grpc.hi', function () {
+        Router::post('/sayHello', 'App\Controller\HiController@sayHello');
     });
 });
