@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 use App\Controller\AuthController;
+use App\Controller\OAuthController;
 use App\Controller\Hr\KPI\ItemCategoryController;
 use App\Controller\Hr\KPI\ItemController;
 use App\Controller\Hr\KPI\RankController;
 use App\Controller\Prod\ScheduleController;
+use App\Controller\Application\ApplicationController;
 use Hyperf\HttpServer\Router\Router;
 
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@sayHello');
@@ -19,10 +21,18 @@ Router::get('/favicon.ico', function () {
 
 Router::addGroup('/api', function () {
     Router::addGroup('/oauth2.0', function () {
-        Router::addRoute(['POST'], '/token', [AuthController::class, 'getAccessToken']);
+        Router::addRoute(['POST'], '/token', [OAuthController::class, 'getAccessToken']);
     });
 
-    Router::post('/logout', [AuthController::class, 'logout']);
+    Router::post('/logout', [OAuthController::class, 'logout']);
+
+    Router::addGroup('/application', function () {
+        Router::addRoute(['GET'], '/current-application', [ApplicationController::class, 'getCurrentApplication']);
+    });
+
+    Router::addGroup('/authorization', function () {
+        Router::addRoute(['GET'], '/user-menus', [AuthController::class, 'getUserMenusByAppIdAndUserId']);
+    });
 
     Router::addGroup('/prod', function () {
         Router::addRoute(['GET'], '/schedule', [ScheduleController::class, 'schedule']);
@@ -46,10 +56,12 @@ Router::addGroup('/api', function () {
 
         Router::addRoute(['GET'], '/position-groups', [\App\Controller\Hr\KPI\PositionGroupController::class, 'getAllPositionGroup']);
     });
+
+    Router::get('/sayHello', 'App\Controller\IndexController@sayHello');
 });
 
 Router::addServer('grpc', function () {
     Router::addGroup('/grpc.hi', function () {
-        Router::post('/sayHello', 'App\Controller\HiController@sayHello');
+        Router::post('/sayHello', 'App\Controller\IndexController@sayHello');
     });
 });

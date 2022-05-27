@@ -4,26 +4,28 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\Constants\RedisKey;
-use App\Util\JwtUtil;
+use App\Service\OauthService;
 use Hyperf\Context\Context;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Hyperf\Utils\ApplicationContext;
-
-
+use Hyperf\Di\Annotation\Inject;
 
 class SsoMiddleware implements MiddlewareInterface
 {
+    /**
+     * @Inject
+     * @var OauthService
+     */
+    private $oauthService;
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = Context::get(ResponseInterface::class);
 
         $requestUri = $request->getServerParams()['request_uri'];
-        $whiteList = ['/api/oauth2.0/token', '/api/logout'];
+        $whiteList = ['/api/oauth2.0/token', '/api/application/current-application'];
         if (in_array($requestUri, $whiteList)) {
             return $handler->handle($request);
         }
@@ -32,17 +34,11 @@ class SsoMiddleware implements MiddlewareInterface
 
         $status = 401;
         if ($jwt) {
-            $jwt = substr($jwt, 7);
-            $claims = JwtUtil::parseJwt($jwt);
-            $userId = $claims['userId'];
-            $container = ApplicationContext::getContainer();
-            $redis = $container->get(\Hyperf\Redis\Redis::class);
-            $isLogin = $redis->exists(RedisKey::ISSUED_ACCESS_TOKEN . ':' . $userId);
+            $isLogin = $this->oauthService->isUserLogin($jwt);
             if ($isLogin) {
                 return $handler->handle($request);
             }
         }
-
 
         return $response->withStatus($status);
     }

@@ -29,7 +29,6 @@ class CurlUtil
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
         return $response;
     }
 
@@ -48,6 +47,9 @@ class CurlUtil
             CURLOPT_CUSTOMREQUEST => 'POST',
         ];
 
+
+        $opt[CURLOPT_HTTPHEADER] = $headers;
+
         if (!empty($params)) {
             if (!empty($headers)) {
                 $headers[] = ['Content-Type: application/x-www-form-urlencoded'];
@@ -55,7 +57,6 @@ class CurlUtil
                 $headers = ['Content-Type: application/x-www-form-urlencoded'];
             }
             $opt[CURLOPT_POSTFIELDS] = http_build_query($params);
-            $opt[CURLOPT_HTTPHEADER] = $headers;
         }
 
         curl_setopt_array(
