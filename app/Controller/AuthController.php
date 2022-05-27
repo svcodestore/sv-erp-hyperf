@@ -20,7 +20,7 @@ class AuthController extends AbstractController
         $applicationId = $this->request->query('applicationId', '');
         $userId = $this->request->query('userId', '');
         $jwt = $this->request->getHeaders()['authorization'][0] ?? '';
-        if (!$applicationId || !$userId || !$jwt) {
+        if ($applicationId === '' || $userId === '' || $jwt === '') {
             return $this->responseDetail();
         }
 
