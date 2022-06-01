@@ -12,9 +12,9 @@ use App\Controller\Application\ApplicationController;
 use App\Controller\Bs\OrderController;
 use Hyperf\HttpServer\Router\Router;
 use App\Controller\Hr\KPI\PositionController;
-use App\Controller\Hr\KPI\ItemCategoryController;
 use App\Controller\Hr\KPI\PositionGroupController;
 use App\Controller\Hr\KPI\TitleCategoryController;
+
 
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@sayHello');
 Router::addRoute(['GET'], '/api', 'App\Controller\IndexController@index');
@@ -62,18 +62,14 @@ Router::addGroup('/api', function () {
         Router::addRoute(['GET'], '/position-groups', [\App\Controller\Hr\KPI\PositionGroupController::class, 'getAllPositionGroup']);
     });
 
-    Router::addGroup('/bs', function () {
-        Router::addRoute(['GET'], '/orders', [OrderController::class, 'getAllOrder']);
-        Router::addRoute(['GET'], '/order-details', [OrderController::class, 'getOrderDetails']);
-    });
-
     Router::addGroup('/tpm', function () {
         Router::addRoute(['GET'], '/fittings', [\App\Controller\TPM\FittingController::class, 'fittings']);
         Router::addRoute(['GET'], '/machines', [\App\Controller\TPM\MachineController::class, 'machines']);
         Router::addRoute(['GET'], '/staffs', [\App\Controller\TPM\StaffController::class, 'staffs']);
         Router::addRoute(['GET'], '/quickReport', [\App\Controller\TPM\ReportController::class, 'report']);
-    });
 
+        Router::addRoute(['GET'], '/records', [\App\Controller\TPM\RecordController::class, 'records']);
+    });
 
     Router::get('/sayHello', 'App\Controller\IndexController@sayHello');
 });
@@ -81,8 +77,5 @@ Router::addGroup('/api', function () {
 Router::addServer('grpc', function () {
     Router::addGroup('/grpc.hi', function () {
         Router::post('/sayHello', 'App\Controller\IndexController@sayHello');
-        Router::addGroup('/tpm', function () {
-            Router::addRoute(['GET'], '/fittings', [\App\Controller\TPM\FittingController::class, 'fittings']);
-        });
     });
 });
