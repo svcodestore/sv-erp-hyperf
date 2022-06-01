@@ -379,19 +379,25 @@ class SingleShift extends AbstractSchedule
             while ($diff > 0) {
                 $_lastStartAt -= $scd;
                 if ($_lastStartAt >= $morningWorkDatetimeStop && $_lastStartAt < $afternoonWorkDatetimeStart) {
-                    $isInMorRest = true;
+                    if (!$isInMorRest) {
+                        $isInMorRest = true;
+                    }
                 }
                 if ($_lastStartAt >= $afternoonWorkDatetimeStop && $_lastStartAt < $eveningWorkDatetimeStart) {
-                    $isInAftRest = true;
+                    if (!$isInAftRest) {
+                        $isInAftRest = true;
+                    }
                 }
                 $diff -= $scd;
             }
 
-            if ($isInMorRest) {
-                $phaseActualStartAt -= $morRest;
-            }
             if ($isInAftRest) {
                 $phaseActualStartAt -= $aftRest;
+                if ($phaseActualStartAt >= $morningWorkDatetimeStop && $phaseActualStartAt < $afternoonWorkDatetimeStart) {
+                    $phaseActualStartAt -= $morRest;
+                }
+            } elseif ($isInMorRest) {
+                $phaseActualStartAt -= $morRest;
             }
 
             if ($phaseActualStartAt < $morningWorkDatetimeStart) {

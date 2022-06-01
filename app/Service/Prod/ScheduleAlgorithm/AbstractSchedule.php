@@ -160,12 +160,13 @@ abstract class AbstractSchedule implements ISchedule
                 $nextPhase = $beforeOnlineWorkshops[$index + 1];
                 $lastStart = $start =
                     strtotime($nextPhase['start_at']);
+                $start -= ($p['dead_time'] + $p['ahead_time']);
+                $lastStart = $start = $this->handlePhaseStartTime($lastStart, $start, true, $phsSeq, $p['map_ppi_phsid']);
                 if ((int)$p['out_time'] > 0) {
                     $start -= (int)$p['out_time'];
                 } else {
                     $start -= $singlePhaseNeed;
                 }
-                $start -= ($p['dead_time'] + $p['ahead_time']);
             }
 
             $start = $this->handlePhaseStartTime($lastStart, $start, true);
