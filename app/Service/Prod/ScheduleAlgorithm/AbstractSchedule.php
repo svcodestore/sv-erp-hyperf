@@ -161,7 +161,7 @@ abstract class AbstractSchedule implements ISchedule
                 $lastStart = $start =
                     strtotime($nextPhase['start_at']);
                 $start -= ($p['dead_time'] + $p['ahead_time']);
-                $lastStart = $start = $this->handlePhaseStartTime($lastStart, $start, true, $phsSeq, $p['map_ppi_phsid']);
+                $lastStart = $start = $this->handlePhaseStartTime($lastStart, $start, true);
                 if ((int)$p['out_time'] > 0) {
                     $start -= (int)$p['out_time'];
                 } else {
