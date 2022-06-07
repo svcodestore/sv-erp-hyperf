@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Prod;
 
 use App\Controller\AbstractController;
-use App\Request\ScheduleRequest;
+use App\Request\Prod\ScheduleRequest;
 use App\Service\Prod\ScheduleService;
 use Hyperf\Di\Annotation\Inject;
 

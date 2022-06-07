@@ -9,6 +9,7 @@ use App\Controller\Hr\KPI\ItemController;
 use App\Controller\Hr\KPI\RankController;
 use App\Controller\Prod\ScheduleController;
 use App\Controller\Application\ApplicationController;
+use App\Controller\Bs\OrderController;
 use Hyperf\HttpServer\Router\Router;
 
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@sayHello');
@@ -55,6 +56,10 @@ Router::addGroup('/api', function () {
         Router::addRoute(['GET'], '/positions', [\App\Controller\Hr\KPI\PositionController::class, 'getAllPosition']);
 
         Router::addRoute(['GET'], '/position-groups', [\App\Controller\Hr\KPI\PositionGroupController::class, 'getAllPositionGroup']);
+    });
+
+    Router::addGroup('/bs', function () {
+        Router::addRoute(['GET'], '/orders', [OrderController::class, 'getAllOrder']);
     });
 
     Router::get('/sayHello', 'App\Controller\IndexController@sayHello');
