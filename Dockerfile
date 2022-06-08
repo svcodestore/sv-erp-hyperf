@@ -42,7 +42,7 @@ RUN set -ex \
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && echo "${TIMEZONE}" > /etc/timezone \
     # ---------- clear works ----------
-    && apk del gcc g++ autoconf make unixodbc-dev php-dev \
+    && apk del gcc g++ autoconf make php-dev \
     && rm -rf /var/cache/apk/* /tmp/* /usr/share/man \
     && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
