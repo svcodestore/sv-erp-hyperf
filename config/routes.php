@@ -60,6 +60,7 @@ Router::addGroup('/api', function () {
 
     Router::addGroup('/bs', function () {
         Router::addRoute(['GET'], '/orders', [OrderController::class, 'getAllOrder']);
+        Router::addRoute(['GET'], '/order-details', [OrderController::class, 'getOrderDetails']);
     });
 
     Router::get('/sayHello', 'App\Controller\IndexController@sayHello');
