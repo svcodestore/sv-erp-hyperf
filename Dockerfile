@@ -1,9 +1,4 @@
-FROM microsoft/mssql-tools as mssql
 FROM hyperf/hyperf:7.4-alpine-v3.12-swoole
-
-COPY --from=mssql /opt/microsoft/ /opt/microsoft/
-COPY --from=mssql /opt/mssql-tools/ /opt/mssql-tools/
-COPY --from=mssql /usr/lib/libmsodbcsql-13.so /usr/lib/libmsodbcsql-13.so
 
 ##
 # ---------- env settings ----------
@@ -24,6 +19,10 @@ RUN set -ex \
     && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
     && apk add --no-cache gcc g++ autoconf make unixodbc-dev php-dev \
     && pecl install sqlsrv pdo_sqlsrv \
+    && curl -O https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/msodbcsql17_17.7.2.1-1_amd64.apk \
+    && curl -O https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/mssql-tools_17.7.1.1-1_amd64.apk \
+    && apk add --allow-untrusted msodbcsql17_17.7.2.1-1_amd64.apk \
+    && apk add --allow-untrusted mssql-tools_17.7.1.1-1_amd64.apk \
     #  ---------- some config ----------
     && cd /etc/php7 \
     # - config PHP
