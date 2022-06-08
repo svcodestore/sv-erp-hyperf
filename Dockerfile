@@ -26,6 +26,7 @@ RUN set -ex \
     && php --ri swoole \
     && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
     && apk add --no-cache gcc g++ autoconf make unixodbc-dev php-dev \
+    && pecl install sqlsrv pdo_sqlsrv \
     #  ---------- some config ----------
     && cd /etc/php7 \
     # - config PHP
