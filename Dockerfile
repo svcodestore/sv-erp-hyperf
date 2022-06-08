@@ -1,12 +1,9 @@
-# Default Dockerfile
-#
-# @link     https://www.hyperf.io
-# @document https://hyperf.wiki
-# @contact  group@hyperf.io
-# @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
-
+FROM microsoft/mssql-tools as mssql
 FROM hyperf/hyperf:7.4-alpine-v3.12-swoole
-LABEL maintainer="Hyperf Developers <group@hyperf.io>" version="1.0" license="MIT" app.name="Hyperf"
+
+COPY --from=mssql /opt/microsoft/ /opt/microsoft/
+COPY --from=mssql /opt/mssql-tools/ /opt/mssql-tools/
+COPY --from=mssql /usr/lib/libmsodbcsql-13.so /usr/lib/libmsodbcsql-13.so
 
 ##
 # ---------- env settings ----------
