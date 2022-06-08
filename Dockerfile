@@ -24,6 +24,8 @@ RUN set -ex \
     && php -v \
     && php -m \
     && php --ri swoole \
+    && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
+    && apk add --no-cache gcc g++ autoconf make unixodbc-dev php-dev \
     #  ---------- some config ----------
     && cd /etc/php7 \
     # - config PHP
@@ -39,6 +41,7 @@ RUN set -ex \
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && echo "${TIMEZONE}" > /etc/timezone \
     # ---------- clear works ----------
+    && apk del gcc g++ autoconf make unixodbc-dev php-dev \
     && rm -rf /var/cache/apk/* /tmp/* /usr/share/man \
     && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
