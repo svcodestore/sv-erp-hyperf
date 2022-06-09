@@ -7,8 +7,7 @@ use App\Model\TPM\StaffModel;
 use App\Model\TPM\RecordModel;
 use App\Model\TPM\MachineModel;
 use Hyperf\HttpServer\Contract\RequestInterface;
-use App\Service\Sms\AliyunSms;
-use App\Service\Wechat\WxNotify;
+use Hyperf\Di\Annotation\Inject;
 
 class ReportService extends Service
 {

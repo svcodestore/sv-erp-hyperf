@@ -16,6 +16,7 @@ use App\Controller\Hr\KPI\PositionGroupController;
 use App\Controller\Hr\KPI\TitleCategoryController;
 
 
+
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@sayHello');
 Router::addRoute(['GET'], '/api', 'App\Controller\IndexController@index');
 
@@ -61,6 +62,7 @@ Router::addGroup('/api', function () {
 
         Router::addRoute(['GET'], '/position-groups', [\App\Controller\Hr\KPI\PositionGroupController::class, 'getAllPositionGroup']);
     });
+
 
     Router::addGroup('/tpm', function () {
         Router::addRoute(['GET'], '/fittings', [\App\Controller\TPM\FittingController::class, 'fittings']);

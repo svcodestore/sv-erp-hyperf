@@ -6,5 +6,5 @@ use App\Model\Model;
 
 class FittingUsedModel extends Model
 {
-  protected $table = 'prodlib_repair_fitting_used';
+  protected $table = 'tpmdb.repair_fitting_used';
 }
