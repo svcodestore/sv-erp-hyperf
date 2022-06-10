@@ -6,7 +6,7 @@ use App\Controller\AuthController;
 use App\Controller\OAuthController;
 use App\Controller\Hr\KPI\ItemController;
 use App\Controller\Hr\KPI\RankController;
-use App\Controller\Hr\KPI\TitleController;
+
 use App\Controller\Prod\ScheduleController;
 use App\Controller\Application\ApplicationController;
 use App\Controller\Bs\OrderController;
@@ -14,7 +14,6 @@ use Hyperf\HttpServer\Router\Router;
 use App\Controller\Hr\KPI\PositionController;
 use App\Controller\Hr\KPI\PositionGroupController;
 use App\Controller\Hr\KPI\TitleCategoryController;
-
 
 
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@sayHello');

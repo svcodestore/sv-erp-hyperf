@@ -2,4 +2,6 @@
 
 declare(strict_types=1);
 
-return [];
+return [
+  Hyperf\Crontab\Process\CrontabDispatcherProcess::class,
+];

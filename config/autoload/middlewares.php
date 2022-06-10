@@ -6,6 +6,6 @@ return [
     'http' => [
         // \Hyperf\Validation\Middleware\ValidationMiddleware::class,
         App\Middleware\CorsMiddleware::class,
-        App\Middleware\SsoMiddleware::class,
+        // App\Middleware\SsoMiddleware::class,
     ],
 ];
