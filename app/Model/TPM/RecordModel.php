@@ -8,7 +8,8 @@ use App\Model\Model;
 
 class RecordModel extends Model
 {
-  protected $table = 'tpmdb.repair_record';
+  protected $table = 'tpmdb.repair_records';
+  public $timestamps = false;
 
   /**
    * 关联机器表

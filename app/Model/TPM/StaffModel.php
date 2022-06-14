@@ -10,5 +10,5 @@ use App\Model\Model;
 
 class StaffModel extends Model
 {
-  protected $table = 'tpmdb.repair_notify_staff';
+  protected $table = 'tpmdb.notify_staffs';
 }
