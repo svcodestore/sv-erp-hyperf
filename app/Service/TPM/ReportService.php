@@ -132,4 +132,77 @@ class ReportService extends Service
 
     return $return;
   }
+
+
+  /**
+   * 维修到场确认
+   * @param $phone 维修人电话
+   * @param $inputNum 维修人确认码(电话后四位)
+   * @param $record_id 报修记录 id
+   * @param $mache_num 机器编号
+   */
+  public function checkCode($phone, $inputNum, $record_id = null, $mache_num = null)
+  {
+    $msg['code'] = 1;
+    $msg['msg'] = 'error';
+
+    if (!$record_id && $mache_num) {
+      // $noreach_ids = $record->repair_record(
+      //   'r.id',
+      //   "`mechenum` = '$mache_num' AND `reachtime` = 0 AND `repairstatus` = 'false'",
+      //   0,
+      //   1000
+      // );
+
+      $noreach_ids = RecordModel::query()->select('id')
+        ->where('mechenum', '=', $mache_num)
+        ->where('reachtime', '=', 0)
+        ->where('repairstatus', '=', false)
+        ->get();
+
+      $ids = array_map(function ($item) {
+        return $item['id'];
+      }, $noreach_ids);
+    } else {
+      $ids = [$record_id];
+    }
+
+    if (empty($ids)) {
+      return $msg;
+    }
+
+    $staff = StaffModel::query()->where('notify_phone', '=', $phone)->first();
+    if ($staff->notify_name && $phone && $inputNum) {
+
+      foreach ($ids as $row) {
+        $record = RecordModel::query()->find($row->id);
+        $record->repairman = $staff->notify_name;
+        $record->reachtime = time();
+        $record->save();
+      }
+
+      $msg['code'] = 0;
+      $msg['msg'] = 'success';
+    }
+
+    // $where['notify_phone'] = $phone;
+    // $list = $record->getNotify('id,notify_phone,notify_name', $where, 0, 10000);
+
+    // if ($list[0]['notify_name'] && $phone && $phoneFour) {
+    //   $data['repairman'] = $list[0]['notify_name'];
+    //   $data['reachtime'] = time();
+    //   foreach ($ids as $id) {
+    //     $res = $record->updateRecord($id, $data);
+    //   }
+    //   if ($res) {
+    //     $msg['code'] = 0;
+    //     $msg['msg'] = 'success';
+    //   }
+    //   return json($msg);
+    // }
+
+
+
+    return $msg;
+  }
 }

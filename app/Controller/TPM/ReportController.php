@@ -35,4 +35,8 @@ class ReportController extends \App\Controller\AbstractController
       $reporter_id
     );
   }
+
+  public function checkCode(RequestInterface $request)
+  {
+  }
 }
