@@ -23,6 +23,15 @@ class RecordController extends AbstractController
   public function records(RequestInterface $request, ResponseInterface $response)
   {
     $service = new RecordService();
-    return $service->getRecord($request, $response);
+    $limit = $request->input('limit', 1000);
+    $search = [
+      'left_time' => $request->input('left_time'),
+      'right_time' => $request->input('right_time'),
+      'mache_num' => $request->input('mache_num'),
+      'reporter_id' => $request->input('reporter_id'),
+      'noreach' => $request->input('noreach'),
+      'cause' => $request->input('cause'),
+    ];
+    return $service->getRecord($search, $limit);
   }
 }
