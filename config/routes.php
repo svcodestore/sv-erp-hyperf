@@ -45,6 +45,8 @@ Router::addGroup('/api', function () {
     Router::addGroup('/hr', function () {
         Router::addRoute(['GET'], '/items', [ItemController::class, 'getAllItem']);
 
+        Router::addRoute(['POST'], '/items/batch', [ItemController::class, 'saveCurdItem']);
+
         Router::addRoute(['GET'], '/item-categories', [ItemCategoryController::class, 'getAllItemCategory']);
 
         Router::addRoute(['GET'], '/titles', [\App\Controller\Hr\KPI\TitleController::class, 'getAllTitle']);

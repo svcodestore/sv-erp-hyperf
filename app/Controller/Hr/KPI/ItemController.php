@@ -20,4 +20,14 @@ class ItemController extends AbstractController
     {
         return $this->responseOk($this->itemService->getAllItem());
     }
+
+    public function saveCurdItem()
+    {
+        $isOk = $this->itemService->saveCrudItem($this->request);
+
+        if ($isOk) {
+            return $this->responseOk();
+        }
+        return $this->responseDetail();
+    }
 }
