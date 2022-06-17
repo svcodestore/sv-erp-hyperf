@@ -51,10 +51,10 @@ class StrUtil
         for ($i = 0; $i < $l; $i++) {
             $ascii = ord($str[$i]);
             if ($ascii > 64 && $ascii < 91) {
-                $snakeCase .= chr($ascii + 32);
                 if ($l - 1 !== $i) {
                     $snakeCase .= '_';
                 }
+                $snakeCase .= chr($ascii + 32);
             } else {
                 $snakeCase .= $str[$i];
             }
