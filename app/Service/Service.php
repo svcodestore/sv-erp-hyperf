@@ -24,15 +24,28 @@ class Service implements IService
         $update = StrUtil::withSnakeCase($request->input('U', []));
         if (empty($create) && empty($delete) && empty($update)) return true;
 
+        $isOk = true;
         Db::beginTransaction();
 
         if (!empty($delete)) {
-            $m::destroy($delete);
+            $affectedRows = $m::destroy($delete);
+            $isOk = $affectedRows === count($delete);
+            if (!$isOk) {
+                Db::rollBack();
+                return false;
+            }
         }
+
 
         if (!empty($update)) {
             foreach ($update as $updateItem) {
-                $m::query()->where('id', $updateItem['id'])->update($updateItem);
+                $affectedRows = $m::query()->where('id', $updateItem['id'])->update($updateItem);
+
+                $isOk = $affectedRows === 1;
+            }
+            if (!$isOk) {
+                Db::rollBack();
+                return false;
             }
         }
 
@@ -41,8 +54,15 @@ class Service implements IService
                 foreach (array_keys($createItem) as $key) {
                     $m->$key = $createItem[$key];
                 }
-                $m->save();
+                $isOk = $m->save();
+            }
+            if (!$isOk) {
+                Db::rollBack();
+                return false;
             }
         }
+
+        Db::commit();
+        return true;
     }
 }
