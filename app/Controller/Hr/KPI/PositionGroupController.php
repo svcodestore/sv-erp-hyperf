@@ -19,4 +19,14 @@ class PositionGroupController extends \App\Controller\AbstractController
     {
         return $this->responseOk($this->positionGroupService->getAllPositionGroup());
     }
+
+    public function saveCrudPositionGroup()
+    {
+        $isOk = $this->positionGroupService->saveCrudPositionGroup($this->request);
+
+        if ($isOk) {
+            return $this->responseOk();
+        }
+        return $this->responseDetail();
+    }
 }

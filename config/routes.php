@@ -58,6 +58,8 @@ Router::addGroup('/api', function () {
         Router::addRoute(['GET'], '/positions', [\App\Controller\Hr\KPI\PositionController::class, 'getAllPosition']);
 
         Router::addRoute(['GET'], '/position-groups', [\App\Controller\Hr\KPI\PositionGroupController::class, 'getAllPositionGroup']);
+
+        Router::addRoute(['POST'], '/position-groups/batch', [\App\Controller\Hr\KPI\PositionGroupController::class, 'saveCrudPositionGroup']);
     });
 
     Router::addGroup('/bs', function () {

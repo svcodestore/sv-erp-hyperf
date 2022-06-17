@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Model\Model;
+use App\Util\ArrayUtil;
 use App\Util\StrUtil;
 use Hyperf\DbConnection\Db;
 use Hyperf\HttpServer\Contract\RequestInterface;
@@ -50,11 +51,18 @@ class Service implements IService
         }
 
         if (!empty($create)) {
-            foreach ($create as $createItem) {
-                foreach (array_keys($createItem) as $key) {
-                    $m->$key = $createItem[$key];
+            $tree = ArrayUtil::toTree($create);
+            if (count($create) === count($tree)) {
+                foreach ($create as $createItem) {
+                    foreach (array_keys($createItem) as $key) {
+                        if ($key !== 'id') {
+                            $m->$key = $createItem[$key];
+                        }
+                    }
+                    $isOk = $m->save();
                 }
-                $isOk = $m->save();
+            } else {
+                // Db::table($m->getTable())->insertGetId()
             }
             if (!$isOk) {
                 Db::rollBack();
