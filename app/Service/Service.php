@@ -54,23 +54,35 @@ class Service implements IService
             $tree = ArrayUtil::toTree($create);
             if (count($create) === count($tree)) {
                 foreach ($create as $createItem) {
-                    foreach (array_keys($createItem) as $key) {
-                        if ($key !== 'id') {
-                            $m->$key = $createItem[$key];
-                        }
+                    unset($createItem['id']);
+                    $isOk =  $isOk && Db::table($m->getTable())->insert($createItem);
+                    if (!$isOk) {
+                        Db::rollBack();
+                        return false;
                     }
-                    $isOk = $m->save();
                 }
             } else {
-                // Db::table($m->getTable())->insertGetId()
-            }
-            if (!$isOk) {
-                Db::rollBack();
-                return false;
+                $this->insertTree($m, $tree);
             }
         }
 
         Db::commit();
         return true;
+    }
+
+    public function insertTree(Model $m, array $tree, $pid = '0', $pk = 'id', $parentKey = 'pid', $childrenKey = 'children')
+    {
+        if (empty($tree)) return;
+
+        foreach ($tree as $item) {
+            unset($item[$pk]);
+            $item[$parentKey] = $pid;
+            $children = $item[$childrenKey];
+            unset($item[$childrenKey]);
+            $id = Db::table($m->getTable())->insertGetId($item);
+            if (isset($children) && !empty($children)) {
+                $this->insertTree($m, $children, $id);
+            }
+        }
     }
 }
