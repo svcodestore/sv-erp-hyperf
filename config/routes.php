@@ -49,6 +49,8 @@ Router::addGroup('/api', function () {
 
         Router::addRoute(['GET'], '/item-categories', [ItemCategoryController::class, 'getAllItemCategory']);
 
+        Router::addRoute(['POST'], '/item-categories/batch', [ItemCategoryController::class, 'saveCrudItemCategory']);
+
         Router::addRoute(['GET'], '/titles', [\App\Controller\Hr\KPI\TitleController::class, 'getAllTitle']);
 
         Router::addRoute(['GET'], '/title-categories', [\App\Controller\Hr\KPI\TitleCategoryController::class, 'getAllTitleCategory']);
@@ -56,6 +58,12 @@ Router::addGroup('/api', function () {
         Router::addRoute(['GET'], '/ranks', [RankController::class, 'getAllItem']);
 
         Router::addRoute(['GET'], '/positions', [\App\Controller\Hr\KPI\PositionController::class, 'getAllPosition']);
+
+        Router::addRoute(['POST'], '/positions/batch', [\App\Controller\Hr\KPI\PositionController::class, 'saveCrudPosition']);
+
+        Router::addRoute(['GET'], '/position-items', [\App\Controller\Hr\KPI\PositionItemController::class, 'getAllPositionItem']);
+
+        Router::addRoute(['POST'], '/position-items/batch', [\App\Controller\Hr\KPI\PositionItemController::class, 'saveCrudPositionItem']);
 
         Router::addRoute(['GET'], '/position-groups', [\App\Controller\Hr\KPI\PositionGroupController::class, 'getAllPositionGroup']);
 

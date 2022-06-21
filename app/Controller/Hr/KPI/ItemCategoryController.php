@@ -20,4 +20,14 @@ class ItemCategoryController extends AbstractController
     {
         return $this->responseOk($this->itemCategoryService->getAllItemCategory());
     }
+
+    public function saveCrudItemCategory()
+    {
+        $isOk = $this->itemCategoryService->saveCrudItemCategory($this->request);
+
+        if ($isOk) {
+            return $this->responseOk();
+        }
+        return $this->responseDetail();
+    }
 }

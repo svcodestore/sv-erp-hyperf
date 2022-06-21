@@ -19,4 +19,14 @@ class PositionController extends \App\Controller\AbstractController
     {
         return $this->responseOk($this->positionService->getAllPosition());
     }
+
+    public function saveCrudPosition()
+    {
+        $isOk = $this->positionService->saveCrudPosition($this->request);
+
+        if ($isOk) {
+            return $this->responseOk();
+        }
+        return $this->responseDetail();
+    }
 }
