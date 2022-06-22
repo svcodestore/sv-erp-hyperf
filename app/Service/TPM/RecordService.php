@@ -2,6 +2,7 @@
 
 namespace App\Service\TPM;
 
+use App\Model\TPM\MachineModel;
 use App\Service\Service;
 use Hyperf\DbConnection\Db;
 use App\Model\TPM\RecordModel;
@@ -48,9 +49,9 @@ class RecordService extends Service
       'm.keep_department'
     ];
 
-    $query =  Db::table('tpmdb.repair_records as r')
+    $query =  Db::table((new RecordModel)->getTable() . ' as r')
       ->select($field)
-      ->leftjoin('tpmdb.machines as m', 'r.mechenum', '=', 'm.mache_num');
+      ->leftjoin((new MachineModel)->getTable() . ' as m', 'r.mechenum', '=', 'm.mache_num');
 
     if ($search_condition['left_time']) {
       $pro_time_star = strtotime($search_condition['left_time'] . ' 00:00:00');

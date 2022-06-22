@@ -70,6 +70,12 @@ Router::addGroup('/api', function () {
         Router::addRoute(['GET'], '/quickReport', [\App\Controller\TPM\ReportController::class, 'report']);
 
         Router::addRoute(['GET'], '/records', [\App\Controller\TPM\RecordController::class, 'records']);
+        Router::addRoute(['GET'], '/common_reseaons', [\App\Controller\TPM\OtherController::class, 'commonReseaons']);
+        Router::addRoute(['GET'], '/common_devices', [\App\Controller\TPM\OtherController::class, 'commonDevices']);
+
+        Router::addRoute(['GET'], '/schedules', [\App\Controller\TPM\ScheduleController::class, 'schedules']);
+
+        Router::addRoute(['POST'], '/check_code', [\App\controller\TPM\ReportController::class, 'checkCode']);
     });
 
     Router::get('/sayHello', 'App\Controller\IndexController@sayHello');

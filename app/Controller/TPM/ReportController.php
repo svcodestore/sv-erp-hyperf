@@ -36,7 +36,13 @@ class ReportController extends \App\Controller\AbstractController
     );
   }
 
-  public function checkCode(RequestInterface $request)
+  public function checkCode(RequestInterface $request, ReportService $service)
   {
+    $phone = $request->input('phone');
+    $inputNum = $request->input('phoneFour');
+    $record_id = $request->input('record_id');
+    $mache_num = $request->input('mache_num');
+
+    return $service->checkCode($phone, $inputNum, $record_id, $mache_num);
   }
 }

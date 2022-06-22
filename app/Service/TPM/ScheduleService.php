@@ -2,6 +2,9 @@
 
 namespace App\Service\TPM;
 
+use App\Model\TPM\FittingModel;
+use App\Model\TPM\FittingUsedModel;
+use App\Model\TPM\ScheduleModel;
 use App\Service\Service;
 use Hyperf\DbConnection\Db;
 
@@ -22,20 +25,16 @@ class ScheduleService extends Service
     $fields = [
       's.*',
       'f.fitting_service_life',
-      Db::raw('(SELECT add_time FROM tpmdb.fitting_used WHERE record_id = s.record_id AND fitting_id = s.fitting_id ORDER BY add_time desc LIMIT 1 )  AS last_replace_time')
+      Db::raw('(SELECT add_time FROM' . (new FittingUsedModel)->getTable() . ' WHERE record_id = s.record_id AND fitting_id = s.fitting_id ORDER BY add_time desc LIMIT 1)  AS last_replace_time')
     ];
-    $query = Db::table('tpmdb.schedules as s')
+
+    $query = Db::table((new ScheduleModel)->getTable() . ' as s')
       ->select($fields)
-      ->leftJoin('tpmdb.fittings as f', 'f.id', '=', 's.fitting_id')
-      ->where('s.start_time', '>', $stime);
+      ->leftJoin((new FittingModel)->getTable() . ' as f', 'f.id', '=', 's.fitting_id');
 
-    if ($etime) {
-      $query->where('s.start_time', '<', $etime);
-    }
-
-    if ($mache_num) {
-      $query->where('s.mache_num', '=', $mache_num);
-    }
+    $stime and $query->where('s.start_time', '>', $stime);
+    $etime and $query->where('s.start_time', '<', $etime);
+    $mache_num and $query->where('s.mache_num', '=', $mache_num);
 
     return $query->get();
   }
