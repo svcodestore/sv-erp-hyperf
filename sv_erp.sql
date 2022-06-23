@@ -224,3 +224,18 @@ CREATE TABLE hr_kpi_positions
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
+create table hr_kpi_rank_title
+(
+    id         int auto_increment,
+    rank_id    int         not null,
+    title_id   int         not null,
+    version    varchar(32),
+    created_at datetime(6) not null default current_timestamp(6),
+    created_by bigint      not null,
+    updated_at datetime(6) not null default current_timestamp(6) on update current_timestamp(6),
+    updated_by bigint      not null,
+    primary key (id),
+    constraint unique hr_kpi_rank_title_unique_index (rank_id, title_id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
