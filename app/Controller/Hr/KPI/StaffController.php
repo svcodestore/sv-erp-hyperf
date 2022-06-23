@@ -15,12 +15,12 @@ class StaffController extends \App\Controller\AbstractController
      */
     private $staffService;
 
-    public function getAllTitle(): array
+    public function getAllStaff(): array
     {
         return $this->responseOk($this->staffService->getAllStaff());
     }
 
-    public function saveCrudTitle()
+    public function saveCrudStaff()
     {
         $isOk = $this->staffService->saveCrudStaff($this->request);
 
