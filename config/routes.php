@@ -10,6 +10,7 @@ use App\Controller\Hr\KPI\RankController;
 use App\Controller\Prod\ScheduleController;
 use App\Controller\Application\ApplicationController;
 use App\Controller\Bs\OrderController;
+use App\Controller\Hr\KPI\RankTitleController;
 use Hyperf\HttpServer\Router\Router;
 
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@sayHello');
@@ -53,9 +54,15 @@ Router::addGroup('/api', function () {
 
         Router::addRoute(['GET'], '/titles', [\App\Controller\Hr\KPI\TitleController::class, 'getAllTitle']);
 
-        Router::addRoute(['GET'], '/title-categories', [\App\Controller\Hr\KPI\TitleCategoryController::class, 'getAllTitleCategory']);
+        Router::addRoute(['POST'], '/titles/batch', [\App\Controller\Hr\KPI\TitleController::class, 'saveCrudTitle']);
 
-        Router::addRoute(['GET'], '/ranks', [RankController::class, 'getAllItem']);
+        Router::addRoute(['GET'], '/ranks', [RankController::class, 'getAllRank']);
+
+        Router::addRoute(['POST'], '/ranks/batch', [RankController::class, 'saveCrudRank']);
+
+        Router::addRoute(['GET'], '/rank-titles', [RankTitleController::class, 'getAllRankTitle']);
+
+        Router::addRoute(['POST'], '/rank-titles/batch', [RankTitleController::class, 'saveCrudRankTitle']);
 
         Router::addRoute(['GET'], '/positions', [\App\Controller\Hr\KPI\PositionController::class, 'getAllPosition']);
 

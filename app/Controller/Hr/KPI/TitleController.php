@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Controller\Hr\KPI;
+
 use App\Service\Hr\KPI\TitleService;
 use Hyperf\Di\Annotation\Inject;
 
@@ -17,5 +18,15 @@ class TitleController extends \App\Controller\AbstractController
     public function getAllTitle(): array
     {
         return $this->responseOk($this->titleService->getAllTitle());
+    }
+
+    public function saveCrudTitle()
+    {
+        $isOk = $this->titleService->saveCrudTitle($this->request);
+
+        if ($isOk) {
+            return $this->responseOk();
+        }
+        return $this->responseDetail();
     }
 }

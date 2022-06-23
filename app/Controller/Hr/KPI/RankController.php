@@ -16,8 +16,18 @@ class RankController extends AbstractController
      */
     private $rankService;
 
-    public function getAllItem(): array
+    public function getAllRank(): array
     {
-        return $this->responseOk($this->rankService->getAllItem());
+        return $this->responseOk($this->rankService->getAllRank());
+    }
+
+    public function saveCrudRank()
+    {
+        $isOk = $this->rankService->saveCrudRank($this->request);
+
+        if ($isOk) {
+            return $this->responseOk();
+        }
+        return $this->responseDetail();
     }
 }
