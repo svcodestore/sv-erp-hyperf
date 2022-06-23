@@ -75,6 +75,10 @@ Router::addGroup('/api', function () {
         Router::addRoute(['GET'], '/position-groups', [\App\Controller\Hr\KPI\PositionGroupController::class, 'getAllPositionGroup']);
 
         Router::addRoute(['POST'], '/position-groups/batch', [\App\Controller\Hr\KPI\PositionGroupController::class, 'saveCrudPositionGroup']);
+
+        Router::addRoute(['GET'], '/staffs', [\App\Controller\Hr\KPI\StaffController::class, 'getAllStaff']);
+
+        Router::addRoute(['POST'], '/staffs/batch', [\App\Controller\Hr\KPI\StaffController::class, 'saveCrudStaff']);
     });
 
     Router::addGroup('/bs', function () {
