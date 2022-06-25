@@ -41,6 +41,7 @@ Router::addGroup('/api', function () {
         Router::addRoute(['GET'], '/phases', [ScheduleController::class, 'getPhaseByCode']);
         Router::addRoute(['GET'], '/phases/[{code}]', [ScheduleController::class, 'getPhaseByCode']);
         Router::addRoute(['GET'], '/po', [ScheduleController::class, 'getPo']);
+        Router::addRoute(['GET'], '/calendar', [ScheduleController::class, 'getCalendar']);
     });
 
     Router::addGroup('/hr', function () {

@@ -47,4 +47,12 @@ class ScheduleController extends AbstractController
         $data = $this->scheduleService->getMonthPo($params['workLine'], $params['year'], $params['month']);
         return $this->responseOk($data);
     }
+
+    public function getCalendar()
+    {
+        $year = $this->request->query('year');
+        $month = $this->request->query('month');
+        $data = $this->scheduleService->getCalendar($year, $month);
+        return $this->responseOk($data);
+    }
 }
