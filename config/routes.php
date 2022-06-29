@@ -80,6 +80,22 @@ Router::addGroup('/api', function () {
         Router::addRoute(['GET'], '/staffs', [\App\Controller\Hr\KPI\StaffController::class, 'getAllStaff']);
 
         Router::addRoute(['POST'], '/staffs/batch', [\App\Controller\Hr\KPI\StaffController::class, 'saveCrudStaff']);
+
+        Router::addRoute(['GET'], '/rules', [\App\Controller\Hr\KPI\RuleController::class, 'getAll']);
+
+        Router::addRoute(['POST'], '/rules/batch', [\App\Controller\Hr\KPI\RuleController::class, 'saveCrud']);
+
+        Router::addRoute(['GET'], '/rule-items', [\App\Controller\Hr\KPI\RuleItemController::class, 'getAll']);
+
+        Router::addRoute(['POST'], '/rule-items/batch', [\App\Controller\Hr\KPI\RuleItemController::class, 'saveCrud']);
+
+        Router::addRoute(['GET'], '/group-scores', [\App\Controller\Hr\KPI\PositionGroupScoreController::class, 'getAll']);
+
+        Router::addRoute(['POST'], '/group-scores/batch', [\App\Controller\Hr\KPI\PositionGroupScoreController::class, 'saveCrud']);
+
+        Router::addRoute(['GET'], '/staff-scores', [\App\Controller\Hr\KPI\StaffScoreController::class, 'getAll']);
+
+        Router::addRoute(['POST'], '/staff-scores/batch', [\App\Controller\Hr\KPI\StaffScoreController::class, 'saveCrud']);
     });
 
     Router::addGroup('/bs', function () {
