@@ -257,3 +257,78 @@ create table hr_kpi_staffs
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
+
+
+create table hr_kpi_rule_item
+(
+    id         int auto_increment,
+    category   varchar(32)  not null default 'ratio',
+    expression varchar(255) not null default '90-0:0.95-0.60,100-90:0.98-0.95',
+    remark     varchar(255),
+    created_at datetime(6)  not null default current_timestamp(6),
+    created_by bigint       not null,
+    updated_at datetime(6)  not null default current_timestamp(6) on update current_timestamp(6),
+    updated_by bigint       not null,
+    primary key (id),
+    constraint unique hr_kpi_rule_item_category (category)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
+
+create table hr_kpi_rules
+(
+    id                int auto_increment,
+    kpi_id            int          not null,
+    position_group_id int          not null,
+    rule_item_id      int          not null,
+    rule_expression   varchar(255) not null,
+    created_at        datetime(6)  not null default current_timestamp(6),
+    created_by        bigint       not null,
+    updated_at        datetime(6)  not null default current_timestamp(6) on update current_timestamp(6),
+    updated_by        bigint       not null,
+    primary key (id),
+    constraint unique hr_kpi_rules_unique (kpi_id, position_group_id),
+    constraint hr_kpi_rules_fk_kpi_id foreign key (kpi_id) references hr_kpi_items (id) on update cascade on delete cascade,
+    constraint hr_kpi_rules_fk_position_group_id foreign key (position_group_id) references hr_kpi_position_group (id) on update cascade on delete cascade,
+    constraint hr_kpi_rules_fk_rule_item_id foreign key (rule_item_id) references hr_kpi_rule_item (id) on update cascade on delete cascade
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
+
+create table hr_kpi_position_group_score
+(
+    id         int auto_increment,
+    rule_id    int         not null,
+    month      date        not null,
+    score      varchar(6)  not null,
+    kpi_score  varchar(6)  not null,
+    created_at datetime(6) not null default current_timestamp(6),
+    created_by bigint      not null,
+    updated_at datetime(6) not null default current_timestamp(6) on update current_timestamp(6),
+    updated_by bigint      not null,
+    primary key (id),
+    constraint unique hr_kpi_position_group_score_unique (rule_id, month),
+    constraint hr_kpi_position_group_score_fk_rule_id foreign key (rule_id) references hr_kpi_rules (id) on update cascade
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
+
+create table hr_kpi_staff_score
+(
+    id         int auto_increment,
+    staff_id   int         not null,
+    kpi_id     int         not null,
+    score      varchar(6)  not null,
+    kpi_score  varchar(6)  not null,
+    month      date        not null,
+    created_at datetime(6) not null default current_timestamp(6),
+    created_by bigint      not null,
+    updated_at datetime(6) not null default current_timestamp(6) on update current_timestamp(6),
+    updated_by bigint      not null,
+    primary key (id),
+    constraint unique hr_kpi_staff_score_unique (staff_id, kpi_id),
+    constraint hr_kpi_staff_score_fk_staff_id foreign key (staff_id) references hr_kpi_staffs (id) on update cascade on delete cascade,
+    constraint hr_kpi_staff_score_fk_kpi_id foreign key (kpi_id) references hr_kpi_items (id) on update cascade on delete cascade
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
