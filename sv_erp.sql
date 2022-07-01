@@ -299,7 +299,7 @@ create table hr_kpi_position_group_score
 (
     id         int auto_increment,
     rule_id    int         not null,
-    month      date        not null,
+    month      varchar(7)  not null,
     score      varchar(6)  not null,
     kpi_score  varchar(6)  not null,
     created_at datetime(6) not null default current_timestamp(6),
@@ -320,7 +320,7 @@ create table hr_kpi_staff_score
     kpi_id     int         not null,
     score      varchar(6)  not null,
     kpi_score  varchar(6)  not null,
-    month      date        not null,
+    month      varchar(7)  not null,
     created_at datetime(6) not null default current_timestamp(6),
     created_by bigint      not null,
     updated_at datetime(6) not null default current_timestamp(6) on update current_timestamp(6),
