@@ -219,7 +219,7 @@ CREATE TABLE hr_kpi_positions
     index hr_kpi_position_index_group (group_id),
     index hr_kpi_position_index_kpi (kpi_id),
     index hr_kpi_position_index_category (category_id),
-    constraint unique hr_kpi_position_unique_index (item_id, group_id, category_id)
+    constraint unique hr_kpi_position_unique_index (item_id, group_id, category_id, kpi_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
