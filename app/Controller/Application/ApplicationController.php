@@ -21,8 +21,14 @@ class ApplicationController extends AbstractController
         $application = $this->applicationService->currentApplication();
 
         $isIntranet = true;
-        $ip = $this->request->getHeader('x-forwarded-for')[0];
-        if (strpos($ip, '192.') === false || strpos($ip, '172.') === false) {
+        $forwardedIps = $this->request->getHeader('x-forwarded-for');
+        if (empty($forwardedIps)) {
+            $ip = $this->request->getHeader('host')[0];
+        } else {
+            $ip = $forwardedIps[0];
+        }
+
+        if (strpos($ip, '127.0.0.1') === false && strpos($ip, 'localhost') === false && strpos($ip, '192.') === false && strpos($ip, '172.') === false) {
             $isIntranet = false;
         }
 
