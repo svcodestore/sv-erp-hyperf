@@ -21,8 +21,9 @@ class ApplicationController extends AbstractController
         $application = $this->applicationService->currentApplication();
 
         $isIntranet = true;
-        foreach (explode(".", $this->request->getServerParams()['remote_addr']) as $segment) {
-            $isIntranet = $isIntranet && is_numeric($segment);
+        $ip = $this->request->getHeader('x-forwarded-for')[0];
+        if (strpos($ip, '192.') === false || strpos($ip, '172.') === false) {
+            $isIntranet = false;
         }
 
         $redirectUris = explode("|", $application["redirectUris"]);
