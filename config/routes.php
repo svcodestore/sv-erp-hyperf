@@ -3,10 +3,21 @@
 declare(strict_types=1);
 
 use App\Controller\AuthController;
+use App\Controller\Hr\KPI\PositionController;
+use App\Controller\Hr\KPI\PositionGroupController;
+use App\Controller\Hr\KPI\PositionGroupScoreController;
+use App\Controller\Hr\KPI\PositionItemController;
+use App\Controller\Hr\KPI\RuleController;
+use App\Controller\Hr\KPI\RuleItemController;
+use App\Controller\Hr\KPI\StaffController;
+use App\Controller\Hr\KPI\StaffScoreController;
+use App\Controller\Hr\KPI\TitleController;
 use App\Controller\OAuthController;
 use App\Controller\Hr\KPI\ItemCategoryController;
 use App\Controller\Hr\KPI\ItemController;
 use App\Controller\Hr\KPI\RankController;
+use App\Controller\Prod\CalendarController;
+use App\Controller\Prod\ParamController;
 use App\Controller\Prod\ScheduleController;
 use App\Controller\Application\ApplicationController;
 use App\Controller\Bs\OrderController;
@@ -41,7 +52,13 @@ Router::addGroup('/api', function () {
         Router::addRoute(['GET'], '/phases', [ScheduleController::class, 'getPhaseByCode']);
         Router::addRoute(['GET'], '/phases/[{code}]', [ScheduleController::class, 'getPhaseByCode']);
         Router::addRoute(['GET'], '/po', [ScheduleController::class, 'getPo']);
-        Router::addRoute(['GET'], '/calendar', [ScheduleController::class, 'getCalendar']);
+        Router::addRoute(['GET'], '/calendars', [CalendarController::class, 'getAll']);
+        Router::addRoute(['GET'], '/calendar', [CalendarController::class, 'getCalendarByDate']);
+        Router::addRoute(['POST'], '/calendar', [CalendarController::class, 'addCalendar']);
+        Router::addRoute(['PUT'], '/calendar/{id}', [CalendarController::class, 'updateCalendarById']);
+        Router::addRoute(['GET'], '/settings/parameters', [ParamController::class, 'getAll']);
+        Router::addRoute(['GET'], '/settings/parameter', [ParamController::class, 'getParamByKey']);
+        Router::addRoute(['PUT'], '/settings/parameter', [ParamController::class, 'setParamByKey']);
     });
 
     Router::addGroup('/hr', function () {
@@ -53,9 +70,9 @@ Router::addGroup('/api', function () {
 
         Router::addRoute(['POST'], '/item-categories/batch', [ItemCategoryController::class, 'saveCrudItemCategory']);
 
-        Router::addRoute(['GET'], '/titles', [\App\Controller\Hr\KPI\TitleController::class, 'getAllTitle']);
+        Router::addRoute(['GET'], '/titles', [TitleController::class, 'getAllTitle']);
 
-        Router::addRoute(['POST'], '/titles/batch', [\App\Controller\Hr\KPI\TitleController::class, 'saveCrudTitle']);
+        Router::addRoute(['POST'], '/titles/batch', [TitleController::class, 'saveCrudTitle']);
 
         Router::addRoute(['GET'], '/ranks', [RankController::class, 'getAllRank']);
 
@@ -65,37 +82,37 @@ Router::addGroup('/api', function () {
 
         Router::addRoute(['POST'], '/rank-titles/batch', [RankTitleController::class, 'saveCrudRankTitle']);
 
-        Router::addRoute(['GET'], '/positions', [\App\Controller\Hr\KPI\PositionController::class, 'getAllPosition']);
+        Router::addRoute(['GET'], '/positions', [PositionController::class, 'getAllPosition']);
 
-        Router::addRoute(['POST'], '/positions/batch', [\App\Controller\Hr\KPI\PositionController::class, 'saveCrudPosition']);
+        Router::addRoute(['POST'], '/positions/batch', [PositionController::class, 'saveCrudPosition']);
 
-        Router::addRoute(['GET'], '/position-items', [\App\Controller\Hr\KPI\PositionItemController::class, 'getAllPositionItem']);
+        Router::addRoute(['GET'], '/position-items', [PositionItemController::class, 'getAllPositionItem']);
 
-        Router::addRoute(['POST'], '/position-items/batch', [\App\Controller\Hr\KPI\PositionItemController::class, 'saveCrudPositionItem']);
+        Router::addRoute(['POST'], '/position-items/batch', [PositionItemController::class, 'saveCrudPositionItem']);
 
-        Router::addRoute(['GET'], '/position-groups', [\App\Controller\Hr\KPI\PositionGroupController::class, 'getAllPositionGroup']);
+        Router::addRoute(['GET'], '/position-groups', [PositionGroupController::class, 'getAllPositionGroup']);
 
-        Router::addRoute(['POST'], '/position-groups/batch', [\App\Controller\Hr\KPI\PositionGroupController::class, 'saveCrudPositionGroup']);
+        Router::addRoute(['POST'], '/position-groups/batch', [PositionGroupController::class, 'saveCrudPositionGroup']);
 
-        Router::addRoute(['GET'], '/staffs', [\App\Controller\Hr\KPI\StaffController::class, 'getAllStaff']);
+        Router::addRoute(['GET'], '/staffs', [StaffController::class, 'getAllStaff']);
 
-        Router::addRoute(['POST'], '/staffs/batch', [\App\Controller\Hr\KPI\StaffController::class, 'saveCrudStaff']);
+        Router::addRoute(['POST'], '/staffs/batch', [StaffController::class, 'saveCrudStaff']);
 
-        Router::addRoute(['GET'], '/rules', [\App\Controller\Hr\KPI\RuleController::class, 'getAll']);
+        Router::addRoute(['GET'], '/rules', [RuleController::class, 'getAll']);
 
-        Router::addRoute(['POST'], '/rules/batch', [\App\Controller\Hr\KPI\RuleController::class, 'saveCrud']);
+        Router::addRoute(['POST'], '/rules/batch', [RuleController::class, 'saveCrud']);
 
-        Router::addRoute(['GET'], '/rule-items', [\App\Controller\Hr\KPI\RuleItemController::class, 'getAll']);
+        Router::addRoute(['GET'], '/rule-items', [RuleItemController::class, 'getAll']);
 
-        Router::addRoute(['POST'], '/rule-items/batch', [\App\Controller\Hr\KPI\RuleItemController::class, 'saveCrud']);
+        Router::addRoute(['POST'], '/rule-items/batch', [RuleItemController::class, 'saveCrud']);
 
-        Router::addRoute(['GET'], '/group-scores', [\App\Controller\Hr\KPI\PositionGroupScoreController::class, 'getAll']);
+        Router::addRoute(['GET'], '/group-scores', [PositionGroupScoreController::class, 'getAll']);
 
-        Router::addRoute(['POST'], '/group-scores/batch', [\App\Controller\Hr\KPI\PositionGroupScoreController::class, 'saveCrud']);
+        Router::addRoute(['POST'], '/group-scores/batch', [PositionGroupScoreController::class, 'saveCrud']);
 
-        Router::addRoute(['GET'], '/staff-scores', [\App\Controller\Hr\KPI\StaffScoreController::class, 'getAll']);
+        Router::addRoute(['GET'], '/staff-scores', [StaffScoreController::class, 'getAll']);
 
-        Router::addRoute(['POST'], '/staff-scores/batch', [\App\Controller\Hr\KPI\StaffScoreController::class, 'saveCrud']);
+        Router::addRoute(['POST'], '/staff-scores/batch', [StaffScoreController::class, 'saveCrud']);
     });
 
     Router::addGroup('/bs', function () {
