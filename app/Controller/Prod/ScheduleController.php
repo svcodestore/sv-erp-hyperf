@@ -9,7 +9,6 @@ use App\Request\Prod\ScheduleRequest;
 use App\Service\Prod\ScheduleService;
 use App\Util\CurlUtil;
 use Hyperf\Di\Annotation\Inject;
-
 class ScheduleController extends AbstractController
 {
     /**
@@ -81,17 +80,6 @@ class ScheduleController extends AbstractController
     {
         $params = $request->validated();
         $data = $this->scheduleService->getMonthPo($params['workLine'], $params['year'], $params['month']);
-        return $this->responseOk($data);
-    }
-
-    public function getCalendar()
-    {
-        $year = $this->request->query('year');
-        $month = $this->request->query('month');
-        $month = $month > 9 ? $month : '0' . $month;
-
-        $data = $this->scheduleService->getCalendar($year, $month);
-
         return $this->responseOk($data);
     }
 }

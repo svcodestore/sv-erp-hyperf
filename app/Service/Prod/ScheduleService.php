@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Prod;
 
 use App\Model\Prod\Schedule\CalendarModel;
-use App\Model\Prod\Schedule\ParamsModel;
+use App\Model\Prod\Schedule\ParamModel;
 use App\Model\Prod\Schedule\PhaseModel;
 use App\Model\Prod\Schedule\PoModel;
 use App\Service\Prod\ScheduleAlgorithm\MultiShift;
@@ -14,11 +14,6 @@ use App\Service\Service;
 
 class ScheduleService extends Service
 {
-    public function getAllCalendar(): array
-    {
-        return $this->all(new CalendarModel);
-    }
-
     public function getMonthPo(string $workLine, string $year, string $month): array
     {
         $cond = [
@@ -55,7 +50,7 @@ class ScheduleService extends Service
 
     public function getScheduleParams(): array
     {
-        $params = $this->all(new ParamsModel);
+        $params = $this->all(new ParamModel);
 
         $bisection_count = 1;
         $shifts = [];
