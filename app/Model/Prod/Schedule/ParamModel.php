@@ -6,7 +6,9 @@ namespace App\Model\Prod\Schedule;
 
 use App\Model\Model;
 
-class ParamsModel extends Model
+class ParamModel extends Model
 {
     protected $table = 'prod_schedule_params';
+
+    public $timestamps = false;
 }
