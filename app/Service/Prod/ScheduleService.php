@@ -11,6 +11,7 @@ use App\Model\Prod\Schedule\PoModel;
 use App\Service\Prod\ScheduleAlgorithm\MultiShift;
 use App\Service\Prod\ScheduleAlgorithm\SingleShift;
 use App\Service\Service;
+use Hyperf\HttpServer\Contract\RequestInterface;
 
 class ScheduleService extends Service
 {
@@ -166,5 +167,10 @@ class ScheduleService extends Service
             'worker_num',
         ];
         return $this->all(new PhaseModel, [], $columns);
+    }
+
+    public function saveCrudPhases(RequestInterface $request):bool
+    {
+        return $this->crudBatch(new PhaseModel, $request);
     }
 }

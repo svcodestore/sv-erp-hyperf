@@ -20,7 +20,7 @@ class ScheduleController extends AbstractController
     public function schedule(ScheduleRequest $request)
     {
         $params = $request->validated();
-        $data = $this->scheduleService->getScheduleList($params['workLine'], $params['year'], $params['month']);
+//        $data = $this->scheduleService->getScheduleList($params['workLine'], $params['year'], $params['month']);
 
         $p = ['prodLine' => $params['workLine'], 'date' => $params['year'] . '-' . ($params['month'] > 9 ? $params['month'] : '0' . $params['month'])];
         $res = json_decode(CurlUtil::post('http://192.168.123.51:11100/webApi/prod/autoSchedule', $p), true);
@@ -81,5 +81,15 @@ class ScheduleController extends AbstractController
         $params = $request->validated();
         $data = $this->scheduleService->getMonthPo($params['workLine'], $params['year'], $params['month']);
         return $this->responseOk($data);
+    }
+
+    public function saveCrudPhases(): array
+    {
+        $isOk = $this->scheduleService->saveCrudPhases($this->request);
+
+        if ($isOk) {
+            return $this->responseOk();
+        }
+        return $this->responseDetail();
     }
 }
