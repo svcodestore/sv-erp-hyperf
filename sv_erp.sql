@@ -37,19 +37,20 @@ CREATE TABLE `prod_schedule_params`
 CREATE TABLE `prod_schedule_po`
 (
     `id`             int                                                          NOT NULL AUTO_INCREMENT,
+    `pid`            int                                                          NOT NULL DEFAULT 0,
     `workshop`       char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci     NOT NULL COMMENT '工作站台',
-    `workshop_name`  varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci      DEFAULT NULL,
+    `workshop_name`  varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          DEFAULT NULL,
     `customer_no`    varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '客户号',
     `customer_po_no` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '客户订单号',
     `item_code`      varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '生产款号',
-    `item_qty`       int                                                               DEFAULT NULL COMMENT '生产数量',
-    `po_month`       tinyint(2)                                                        DEFAULT NULL,
-    `po_year`        smallint(4)                                                       DEFAULT NULL,
-    `is_dirty`       tinyint(1)                                                        DEFAULT 0 COMMENT '是否是外部数据，导入数据，0为否',
-    `created_by`     varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci      DEFAULT NULL,
-    `updated_by`     varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci      DEFAULT NULL,
-    `created_at`     timestamp                                                    NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at`     timestamp                                                    NULL DEFAULT CURRENT_TIMESTAMP,
+    `item_qty`       int                                                                   DEFAULT NULL COMMENT '生产数量',
+    `po_month`       tinyint(2)                                                            DEFAULT NULL,
+    `po_year`        smallint(4)                                                           DEFAULT NULL,
+    `is_dirty`       tinyint(1)                                                            DEFAULT 0 COMMENT '是否是外部数据，导入数据，0为否',
+    `created_by`     varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          DEFAULT NULL,
+    `updated_by`     varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          DEFAULT NULL,
+    `created_at`     timestamp                                                    NULL     DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`     timestamp                                                    NULL     DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
