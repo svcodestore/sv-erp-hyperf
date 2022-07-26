@@ -25,7 +25,7 @@ class SsoMiddleware implements MiddlewareInterface
         $response = Context::get(ResponseInterface::class);
 
         $requestUri = $request->getServerParams()['request_uri'];
-        $whiteList = ['/api/oauth2.0/token', '/api/application/current-application'];
+        $whiteList = ['/api', '/api/oauth2.0/token', '/api/application/current-application'];
         if (in_array($requestUri, $whiteList)) {
             return $handler->handle($request);
         }
