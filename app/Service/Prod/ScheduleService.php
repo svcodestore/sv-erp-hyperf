@@ -4,28 +4,17 @@ declare(strict_types=1);
 
 namespace App\Service\Prod;
 
-use App\Model\Prod\Schedule\CalendarModel;
 use App\Model\Prod\Schedule\ParamModel;
 use App\Model\Prod\Schedule\PhaseModel;
-use App\Model\Prod\Schedule\PoModel;
 use App\Service\Prod\ScheduleAlgorithm\MultiShift;
 use App\Service\Prod\ScheduleAlgorithm\SingleShift;
 use App\Service\Service;
-use Hyperf\HttpServer\Contract\RequestInterface;
 
 class ScheduleService extends Service
 {
-    public function getMonthPo(string $workLine, string $year, string $month): array
-    {
-        $cond = [
-            'workshop' => $workLine, 'po_year' => $year, 'po_month' => $month
-        ];
-        return $this->all(new PoModel, $cond);
-    }
-
     public function getScheduleList(string $workLine, string $year, string $month)
     {
-        $pos = $this->getMonthPo($workLine, $year, $month);
+        $pos = (new PoService)->getMonthPo($workLine, $year, $month);
         if (empty($pos)) return $pos;
 
         foreach ($pos as $k => $po) {
@@ -42,7 +31,7 @@ class ScheduleService extends Service
         $params['prodList'] = array_values($pos);
 
         try {
-        $schedule = $params['isMultiShift'] ? (new MultiShift($params)) : (new SingleShift($params));
+            $schedule = $params['isMultiShift'] ? (new MultiShift($params)) : (new SingleShift($params));
             return $schedule->scheduleList();
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -67,19 +56,13 @@ class ScheduleService extends Service
         return ['bisection_count' => $bisection_count, 'shifts' => $shifts];
     }
 
-    public function getCalendar(string $year, string $month): array
-    {
-        $cond = ['year' => $year, 'month' => $month];
-        return $this->all(new CalendarModel, $cond);
-    }
-
     public function getScheduleWrapParams(string $workLine, string $year, string $month): array
     {
         $params = $this->getScheduleParams();
         $shifts = $params['shifts'];
         $getArrangeDays = function (string $year, string $month) use ($shifts) {
             // 行事历
-            $arrangeDays = $this->getCalendar($year, $month);
+            $arrangeDays = (new CalendarService)->getCalendarByDate($year, $month);
 
             foreach ($arrangeDays as $k => $v) {
                 if ($v['profile']) {
@@ -116,7 +99,7 @@ class ScheduleService extends Service
             return $arrangeDays;
         };
 
-        $date = "{$year}-${month}";
+        $date = "{$year}-{$month}";
         $prevDate = explode('-', date('Y-m', strtotime('-1 month', strtotime($date))));
         $nextDate = explode('-', date('Y-m', strtotime('1 month', strtotime($date))));
         $nnextDate = explode('-', date('Y-m', strtotime('2 month', strtotime($date))));
@@ -134,43 +117,4 @@ class ScheduleService extends Service
         return $params;
     }
 
-    public function getPhaseByCode(string $codes): array
-    {
-        $columns = [
-            'id',
-            'code',
-            'name',
-            'code_id',
-            'cost_time',
-            'is_master',
-            'ahead_time',
-            'dead_time',
-            'out_time',
-            'worker_num',
-        ];
-
-        return PhaseModel::query()->whereIn('code', explode(',', $codes))->get($columns)->toArray();
-    }
-
-    public function getPhases(): array
-    {
-        $columns = [
-            'id',
-            'code',
-            'name',
-            'code_id',
-            'cost_time',
-            'is_master',
-            'ahead_time',
-            'dead_time',
-            'out_time',
-            'worker_num',
-        ];
-        return $this->all(new PhaseModel, [], $columns);
-    }
-
-    public function saveCrudPhases(RequestInterface $request):bool
-    {
-        return $this->crudBatch(new PhaseModel, $request);
-    }
 }
