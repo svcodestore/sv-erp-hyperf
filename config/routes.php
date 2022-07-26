@@ -12,20 +12,23 @@ use App\Controller\Hr\KPI\RuleItemController;
 use App\Controller\Hr\KPI\StaffController;
 use App\Controller\Hr\KPI\StaffScoreController;
 use App\Controller\Hr\KPI\TitleController;
+use App\Controller\IndexController;
 use App\Controller\OAuthController;
 use App\Controller\Hr\KPI\ItemCategoryController;
 use App\Controller\Hr\KPI\ItemController;
 use App\Controller\Hr\KPI\RankController;
 use App\Controller\Prod\CalendarController;
 use App\Controller\Prod\ParamController;
+use App\Controller\Prod\PhaseController;
+use App\Controller\Prod\PoController;
 use App\Controller\Prod\ScheduleController;
 use App\Controller\Application\ApplicationController;
 use App\Controller\Bs\OrderController;
 use App\Controller\Hr\KPI\RankTitleController;
 use Hyperf\HttpServer\Router\Router;
 
-Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@sayHello');
-Router::addRoute(['GET'], '/api', 'App\Controller\IndexController@index');
+Router::addRoute(['GET', 'POST', 'HEAD'], '/', [IndexController::class, 'index']);
+Router::get('/api', [IndexController::class, 'index']);
 
 Router::get('/favicon.ico', function () {
     return '';
@@ -39,6 +42,7 @@ Router::addGroup('/api', function () {
 
     Router::post('/logout', [OAuthController::class, 'logout']);
 
+
     Router::addGroup('/application', function () {
         Router::addRoute(['GET'], '/current-application', [ApplicationController::class, 'getCurrentApplication']);
     });
@@ -49,10 +53,13 @@ Router::addGroup('/api', function () {
 
     Router::addGroup('/prod', function () {
         Router::addRoute(['GET'], '/schedule', [ScheduleController::class, 'schedule']);
-        Router::addRoute(['GET'], '/phases', [ScheduleController::class, 'getPhaseByCode']);
-        Router::addRoute(['POST'], '/phases/batch', [ScheduleController::class, 'saveCrudPhases']);
-        Router::addRoute(['GET'], '/phases/[{code}]', [ScheduleController::class, 'getPhaseByCode']);
-        Router::addRoute(['GET'], '/po', [ScheduleController::class, 'getPo']);
+        Router::addRoute(['GET'], '/phases', [PhaseController::class, 'getPhaseByCode']);
+        Router::addRoute(['POST'], '/phases/batch', [PhaseController::class, 'saveCrudPhases']);
+        Router::addRoute(['GET'], '/phases/[{code}]', [PhaseController::class, 'getPhaseByCode']);
+        Router::addRoute(['GET'], '/orders', [PoController::class, 'getPo']);
+        Router::addRoute(['POST'], '/order', [PoController::class, 'addPo']);
+        Router::addRoute(['DELETE'], '/order/{id}', [PoController::class, 'deletePoById']);
+        Router::addRoute(['PUT'], '/order/{id}', [PoController::class, 'updatePoById']);
         Router::addRoute(['GET'], '/calendars', [CalendarController::class, 'getAll']);
         Router::addRoute(['GET'], '/calendar', [CalendarController::class, 'getCalendarByDate']);
         Router::addRoute(['POST'], '/calendar', [CalendarController::class, 'addCalendar']);
